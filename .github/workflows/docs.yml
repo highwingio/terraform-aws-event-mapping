@@ -1,0 +1,17 @@
+name: Docs
+on:
+  - pull_request
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - name: Generate TF Docs
+        uses: terraform-docs/gh-actions@v0.6.1
+        with:
+          working-dir: .
+          output-file: README.md
+          output-method: replace
+          git-push: true
