@@ -19,6 +19,6 @@ variable "source_type" {
 
   validation {
     condition     = contains(["lambda", "bus"], var.source_type)
-    error_message = "Invalid `source_type` given '${var.source_type}'. Valid values are 'lambda' or 'bus'."
+    error_message = "Invalid `source_type` given. Valid values are 'lambda' or 'bus'."
   }
 }
