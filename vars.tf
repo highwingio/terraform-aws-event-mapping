@@ -13,12 +13,12 @@ variable "event_pattern" {
   description = "Event pattern to listen for on source bus"
 }
 
-variable "source_type" {
+variable "target_type" {
   type    = string
   default = "lambda"
 
   validation {
-    condition     = contains(["lambda", "bus"], var.source_type)
-    error_message = "Invalid `source_type` given. Valid values are 'lambda' or 'bus'."
+    condition     = contains(["lambda", "bus"], var.target_type)
+    error_message = "Invalid `target_type` given. Valid values are 'lambda' or 'bus'."
   }
 }
