@@ -38,7 +38,7 @@ resource "aws_cloudwatch_event_target" "event_target" {
 }
 
 resource "aws_lambda_permission" "permission" {
-  count = var.source_type == "lambda" ? 1 : 0
+  count = var.target_type == "lambda" ? 1 : 0
 
   action        = "lambda:InvokeFunction"
   function_name = var.target_arn
