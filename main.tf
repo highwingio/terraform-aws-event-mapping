@@ -32,7 +32,9 @@ resource "aws_cloudwatch_event_rule" "event_rule" {
 }
 
 resource "aws_cloudwatch_event_target" "event_target" {
-  arn            = var.target_arn
+  for_each = var.target_arns
+
+  arn            = each.key
   rule           = aws_cloudwatch_event_rule.event_rule.name
   event_bus_name = var.bus_name
 }

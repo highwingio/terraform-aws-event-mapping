@@ -3,9 +3,9 @@ variable "bus_name" {
   description = "Name of the bus to receive events from"
 }
 
-variable "target_arn" {
-  type        = string
-  description = "Target to route event to"
+variable "target_arns" {
+  type        = array(string)
+  description = "Targets to route event to"
 }
 
 variable "event_pattern" {
@@ -16,6 +16,7 @@ variable "event_pattern" {
 variable "target_type" {
   type    = string
   default = "lambda"
+  description = "Target type to route events to. Must be one of `lambda` or `bus`. All targets specified by `target_arns` must be of the same type."
 
   validation {
     condition     = contains(["lambda", "bus"], var.target_type)
