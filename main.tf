@@ -32,18 +32,18 @@ resource "aws_cloudwatch_event_rule" "event_rule" {
 }
 
 resource "aws_cloudwatch_event_target" "event_target" {
-  for_each = var.target_arns
+  for_each = var.targets
 
-  arn            = each.key
+  arn            = each.value
   rule           = aws_cloudwatch_event_rule.event_rule.name
   event_bus_name = var.bus_name
 }
 
 resource "aws_lambda_permission" "permission" {
-  count = var.target_type == "lambda" ? 1 : 0
+  for_each = local.lambda_arns
 
   action        = "lambda:InvokeFunction"
-  function_name = var.target_arn
+  function_name = each.key
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.event_rule.arn
 }
