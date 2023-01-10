@@ -4,7 +4,7 @@ variable "bus_name" {
 }
 
 variable "targets" {
-  type = set(string)
+  type        = set(string)
   description = "Targets to route event to"
 }
 
@@ -15,6 +15,6 @@ variable "event_pattern" {
 
 locals {
   lambda_names = toset(compact([for arn in var.targets : startswith(arn, "arn:aws:lambda")
-    ? element(split(":", arn), length(split(":", arn))-1)
-    : ""]))
+    ? element(split(":", arn), length(split(":", arn)) - 1)
+  : ""]))
 }
