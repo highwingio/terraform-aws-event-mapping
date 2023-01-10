@@ -4,8 +4,22 @@ variable "bus_name" {
 }
 
 variable "targets" {
-  type        = set(string)
-  description = "Targets to route event to"
+  type = object({
+    lambda = optional(set(string))
+    bus = optional(set(string))
+  })
+
+  validation {
+    condition = alltrue([for arn in var.targets.lambda : (length(regexall("arn:aws:lambda:[a-z,0-9,-]+:\\d{12}:function:", arn)) > 0)])
+    error_message = "The lambda set may only contain lambda ARNs."
+  }
+
+  validation {
+    condition = alltrue([for arn in var.targets.bus : (length(regexall("arn:aws:events:[a-z,0-9,-]+:\\d{12}:event-bus/", arn)) > 0)])
+    error_message = "The bus set may only contain event bus ARNs."
+  }
+
+  description = "Targets to route event to, mapped by target type"
 }
 
 variable "event_pattern" {
@@ -14,7 +28,5 @@ variable "event_pattern" {
 }
 
 locals {
-  lambda_names = toset(compact([for arn in var.targets : startswith(arn, "arn:aws:lambda")
-    ? element(split(":", arn), length(split(":", arn)) - 1)
-  : ""]))
+  lambda_names = [for arn in var.targets.lambda : element(split(":", arn), length(split(":", arn)) - 1)]
 }

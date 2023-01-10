@@ -32,7 +32,7 @@ resource "aws_cloudwatch_event_rule" "event_rule" {
 }
 
 resource "aws_cloudwatch_event_target" "event_target" {
-  for_each = var.targets
+  for_each = toset(flatten(values(tomap(var.targets))))
 
   arn            = each.key
   rule           = aws_cloudwatch_event_rule.event_rule.name
@@ -40,7 +40,7 @@ resource "aws_cloudwatch_event_target" "event_target" {
 }
 
 resource "aws_lambda_permission" "permission" {
-  for_each = local.lambda_names
+  for_each = var.targets.lambda
 
   action        = "lambda:InvokeFunction"
   function_name = each.key

@@ -11,8 +11,12 @@ module "event_mapping" {
   bus_name      = "the-knight-bus"
   event_pattern = "event.DementorsAppear"
 
-  targets = [
-    "arn:aws:lambda:us-east-1:123456789012:function:summonPatronus",
-    "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"
-  ]
+  targets = {
+    bus    = [
+      "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"
+    ],
+    lambda = [
+      "arn:aws:lambda:us-east-1:123456789012:function:summonPatronus"
+    ]
+  }
 }
