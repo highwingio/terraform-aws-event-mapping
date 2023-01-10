@@ -20,5 +20,5 @@ variable "event_pattern" {
 }
 
 locals {
-  lambda_arns = ([for arn, target in var.targets : target == "lambda" ? arn : ""])
+  lambda_arns = toset([for arn, target in var.targets : target == "lambda" ? arn : ""])
 }
