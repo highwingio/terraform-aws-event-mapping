@@ -8,7 +8,7 @@ provider "aws" {
 
 module "event_mapping" {
   source        = "../"
-  bus_name      = "the-night-bus"
+  bus_name      = "the-knight-bus"
   event_pattern = "event.DementorsAppear"
 
   targets = [
