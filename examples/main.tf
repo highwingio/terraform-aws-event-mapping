@@ -20,3 +20,15 @@ module "event_mapping" {
     ]
   }
 }
+
+module "missing_one" {
+  source        = "../"
+  bus_name      = "the-knight-bus"
+  event_pattern = "event.BoggartAppear"
+
+  targets = {
+    lambda = [
+      "arn:aws:lambda:us-east-1:123456789012:function:summonPatronus"
+    ]
+  }
+}
