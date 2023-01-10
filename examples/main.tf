@@ -12,7 +12,7 @@ module "event_mapping" {
   event_pattern = "event.DementorsAppear"
 
   targets = {
-    bus    = [
+    bus = [
       "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"
     ],
     lambda = [
