@@ -31,7 +31,7 @@ $ terraform-docs markdown table . > README.md
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.7 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.49.0 |
 
 ## Modules
 
@@ -51,8 +51,7 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_bus_name"></a> [bus\_name](#input\_bus\_name) | Name of the bus to receive events from | `string` | n/a | yes |
 | <a name="input_event_pattern"></a> [event\_pattern](#input\_event\_pattern) | Event pattern to listen for on source bus | `string` | n/a | yes |
-| <a name="input_target_arn"></a> [target\_arn](#input\_target\_arn) | Target to route event to | `string` | n/a | yes |
-| <a name="input_target_type"></a> [target\_type](#input\_target\_type) | n/a | `string` | `"lambda"` | no |
+| <a name="input_targets"></a> [targets](#input\_targets) | Targets to route event to. Must specify an `arn = type`. `type` must be one of `lambda` or `bus`. | `map(string)` | n/a | yes |
 
 ## Outputs
 
