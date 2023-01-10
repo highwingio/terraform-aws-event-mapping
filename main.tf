@@ -40,7 +40,7 @@ resource "aws_cloudwatch_event_target" "event_target" {
 }
 
 resource "aws_lambda_permission" "permission" {
-  for_each = var.targets.lambda
+  for_each = local.lambda_names
 
   action        = "lambda:InvokeFunction"
   function_name = each.key

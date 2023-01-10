@@ -28,5 +28,5 @@ variable "event_pattern" {
 }
 
 locals {
-  lambda_names = [for arn in var.targets.lambda : element(split(":", arn), length(split(":", arn)) - 1)]
+  lambda_names = toset([for arn in var.targets.lambda : reverse(split(":", arn))[0]])
 }
