@@ -5,17 +5,17 @@ variable "bus_name" {
 
 variable "targets" {
   type = object({
-    lambda = optional(set(string))
-    bus    = optional(set(string))
+    lambda = optional(set(string), [])
+    bus    = optional(set(string), [])
   })
 
   validation {
-    condition     = alltrue([for arn in var.targets.lambda : (length(regexall("arn:aws:lambda:[a-z,0-9,-]+:\\d{12}:function:", arn)) > 0)])
+    condition     = alltrue([for arn in var.targets.lambda : can(regex("arn:aws:lambda:[a-z,0-9,-]+:\\d{12}:function:", arn))])
     error_message = "The lambda set may only contain lambda ARNs."
   }
 
   validation {
-    condition     = alltrue([for arn in var.targets.bus : (length(regexall("arn:aws:events:[a-z,0-9,-]+:\\d{12}:event-bus/", arn)) > 0)])
+    condition     = alltrue([for arn in var.targets.bus : can(regex("arn:aws:events:[a-z,0-9,-]+:\\d{12}:event-bus/", arn))])
     error_message = "The bus set may only contain event bus ARNs."
   }
 
