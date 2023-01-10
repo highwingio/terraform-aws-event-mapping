@@ -4,14 +4,8 @@ variable "bus_name" {
 }
 
 variable "targets" {
-  type = map(string)
-
-  description = "Targets to route event to. Must specify an `arn = type`. `type` must be one of `lambda` or `bus`."
-
-  validation {
-    condition     = alltrue([for arn, type in var.targets : contains(["lambda", "bus"], type)])
-    error_message = "Invalid `type` given. Valid values are 'lambda' or 'bus'."
-  }
+  type = set(string)
+  description = "Targets to route event to"
 }
 
 variable "event_pattern" {
@@ -20,5 +14,7 @@ variable "event_pattern" {
 }
 
 locals {
-  lambda_arns = toset([for arn, target in var.targets : target == "lambda" ? arn : ""])
+  lambda_names = toset(compact([for arn in var.targets : startswith(arn, "arn:aws:lambda")
+    ? element(split(":", arn), length(split(":", arn))-1)
+    : ""]))
 }
