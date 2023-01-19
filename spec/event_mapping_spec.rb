@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe "event_mapping" do
   before :all do
-    @plan = terraform_plan
+    @plan = plan(configuration_directory: 'examples')
   end
 
   it "renders a plan without errors" do
