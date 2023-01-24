@@ -26,5 +26,29 @@ RSpec.describe "event_mapping" do
         expect(event_rule[:event_bus_name]).to eq("the-knight-bus")
       end
     end
+
+    context "multiple lambda targets" do
+      let(:permissions) { @plan.resource_changes_matching(type: "aws_lambda_permission") }
+      let(:permission) { permissions[1].change.after }
+
+      it "sets permissions for each target lambda" do
+        expect(permissions.count).to eq(4)
+        expect(permission[:action]).to eq("lambda:InvokeFunction")
+        expect(permission[:function_name]).to eq("summonHermione")
+        expect(permission[:principal]).to eq("events.amazonaws.com")
+      end
+    end
+
+    context "event targets" do
+      let(:targets) { @plan.resource_changes_matching(type: "aws_cloudwatch_event_target") }
+      let(:target) { targets.first.change.after }
+
+      it "sets permissions for each target lambda" do
+        expect(targets.count).to eq(5)
+        expect(target[:arn]).to eq("arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic")
+        expect(target[:rule]).to eq("event.DementorsAppear")
+        expect(target[:event_bus_name]).to eq("the-knight-bus")
+      end
+    end
   end
 end

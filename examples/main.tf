@@ -28,7 +28,9 @@ module "missing_one" {
 
   targets = {
     lambda = [
-      "arn:aws:lambda:us-east-1:123456789012:function:summonPatronus"
+      "arn:aws:lambda:us-east-1:123456789012:function:summonPatronus",
+      "arn:aws:lambda:us-east-1:123456789012:function:summonRon",
+      "arn:aws:lambda:us-east-1:123456789012:function:summonHermione"
     ]
   }
 }
