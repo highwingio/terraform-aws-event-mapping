@@ -18,4 +18,4 @@ jobs:
       - id: Validate
         run: terraform validate -no-color
       - id: Run Specs
-        uses: ./actions/ruby-tests
+        uses: ./.github/actions/ruby-tests
