@@ -13,8 +13,12 @@ RSpec.describe "event_mapping" do
     let(:event_rules) { @plan.resource_changes_matching(type: "aws_cloudwatch_event_rule") }
 
     it "creates aws_cloudwatch_event_rules for bus targets" do
-      expect(event_rules.count).to eq(2)
-      expect(event_rules).to all(be_create)
+      expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_rule').twice
+    end
+
+    it "points to specified bus" do
+      expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_rule')
+        .with_attribute_value(:event_pattern, "{\"detail-type\":[\"event.DementorsAppear\"]}")
     end
 
     context "bus rules" do
