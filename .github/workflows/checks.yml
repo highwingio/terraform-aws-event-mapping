@@ -1,6 +1,7 @@
 name: Checks
 on:
   - push
+
 jobs:
   terraform:
     runs-on: ubuntu-latest
@@ -23,6 +24,10 @@ jobs:
       AWS_DEFAULT_REGION: us-east-1
     steps:
       - uses: actions/checkout@master
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_NAME }}
+          role-duration-seconds: 900
       - uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 1.3.7
