@@ -26,6 +26,7 @@ jobs:
       - uses: actions/checkout@master
       - uses: aws-actions/configure-aws-credentials@v1
         with:
+          aws-region: us-east-1
           role-to-assume: ${{ secrets.AWS_ROLE_NAME }}
           role-duration-seconds: 900
       - uses: hashicorp/setup-terraform@v1
