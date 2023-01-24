@@ -17,5 +17,5 @@ jobs:
         run: terraform fmt -check -recursive -no-color
       - id: Validate
         run: terraform validate -no-color
-      - id: Run Specs
+      - id: Specs
         uses: ./.github/actions/ruby-tests
