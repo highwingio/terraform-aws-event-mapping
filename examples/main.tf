@@ -7,9 +7,9 @@ provider "aws" {
 }
 
 module "event_mapping" {
-  source        = "../"
-  bus_name      = "the-knight-bus"
-  event_pattern = "event.DementorsAppear"
+  source         = "../"
+  bus_name       = "the-knight-bus"
+  event_patterns = ["event.DementorsAppear"]
 
   targets = {
     bus = [
@@ -22,15 +22,31 @@ module "event_mapping" {
 }
 
 module "missing_one" {
-  source        = "../"
-  bus_name      = "the-knight-bus"
-  event_pattern = "event.BoggartAppear"
+  source         = "../"
+  bus_name       = "the-knight-bus"
+  event_patterns = ["event.BoggartAppear"]
 
   targets = {
     lambda = [
       "arn:aws:lambda:us-east-1:123456789012:function:summonPatronus",
       "arn:aws:lambda:us-east-1:123456789012:function:summonRon",
       "arn:aws:lambda:us-east-1:123456789012:function:summonHermione"
+    ]
+  }
+}
+
+module "multi_event" {
+  source   = "../"
+  bus_name = "the-knight-bus"
+  event_patterns = [
+    "event.RevokeHogsmeadePass",
+    "event.AssignDetention"
+  ]
+
+  targets = {
+    bus = [
+      "arn:aws:events:us-east-1:123456789012:event-bus/drinkButterBeer",
+      "arn:aws:events:us-east-1:123456789012:event-bus/useInvisibilityCloak"
     ]
   }
 }
