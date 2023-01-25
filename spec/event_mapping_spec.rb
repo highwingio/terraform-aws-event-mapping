@@ -18,7 +18,7 @@ RSpec.describe "event_mapping" do
 
     it "points to specified bus" do
       expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_rule')
-        .with_attribute_value(:event_pattern, {"detail-type" => ["event.DementorAppear"]}.to_json)
+        .with_attribute_value(:event_pattern, {"detail-type": ["event.DementorsAppear"]}.to_json)
     end
 
     context "bus rules" do
