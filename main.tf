@@ -23,11 +23,11 @@
  */
 
 resource "aws_cloudwatch_event_rule" "event_rule" {
-  name           = var.event_pattern
+  name           = local.name
   event_bus_name = var.bus_name
 
   event_pattern = jsonencode({
-    detail-type : [var.event_pattern]
+    detail-type : var.event_patterns
   })
 }
 

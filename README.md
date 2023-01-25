@@ -50,7 +50,8 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_bus_name"></a> [bus\_name](#input\_bus\_name) | Name of the bus to receive events from | `string` | n/a | yes |
-| <a name="input_event_pattern"></a> [event\_pattern](#input\_event\_pattern) | Event pattern to listen for on source bus | `string` | n/a | yes |
+| <a name="input_event_patterns"></a> [event\_patterns](#input\_event\_patterns) | Event patterns to listen for on source bus | `list(string)` | n/a | yes |
+| <a name="input_rule_name"></a> [rule\_name](#input\_rule\_name) | Unique name to give the event rule. If empty, will use the first event pattern. | `string` | `null` | no |
 | <a name="input_targets"></a> [targets](#input\_targets) | Targets to route event to, mapped by target type | <pre>object({<br>    lambda = optional(set(string), [])<br>    bus    = optional(set(string), [])<br>  })</pre> | n/a | yes |
 
 ## Outputs
