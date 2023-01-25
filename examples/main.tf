@@ -6,9 +6,10 @@ provider "aws" {
   region = "us-east-1"
 }
 
-module "event_mapping" {
+module "named_event_mapping" {
   source         = "../"
   bus_name       = "the-knight-bus"
+  rule_name      = "getSum"
   event_patterns = ["event.DementorsAppear"]
 
   targets = {
