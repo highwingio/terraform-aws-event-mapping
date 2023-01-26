@@ -70,7 +70,7 @@ RSpec.describe "event api targets" do
     it "creates an iam role" do
       expect(@plan).to include_resource_creation(type: 'aws_iam_role')
                          .once
-      e                         .with_attribute_value(:name, "event.HogwartsExternal-slack")
+                         .with_attribute_value(:name, "event.HogwartsExternal-slack")
     end
 
   end
