@@ -31,8 +31,9 @@ resource "aws_cloudwatch_event_rule" "event_rule" {
   })
 }
 
+# handles the target mapping for lambdas and buses (event_api is more complex)
 resource "aws_cloudwatch_event_target" "event_target" {
-  for_each = toset(flatten(values(tomap(var.targets))))
+  for_each = setunion(var.targets.lambda, var.targets.bus)
 
   arn            = each.key
   rule           = aws_cloudwatch_event_rule.event_rule.name
