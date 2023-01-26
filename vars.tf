@@ -17,7 +17,7 @@ variable "targets" {
       name : string,
       endpoint : string,
       token : string,
-      template_vars = map(string),
+      template_vars = optional(map(string), {}),
       template      = string,
     })), [])
   })

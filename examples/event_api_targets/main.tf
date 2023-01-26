@@ -42,7 +42,18 @@ module "named_event_mapping" {
   ]
 }
 EOF
+      },
+      {
+        name : "slack-2"
+        endpoint : "https://hooks.slack.com/services/my/random/key"
+        token : "xoxb-rando-tokenizer"
+        template = <<EOF
+{
+  "text": "blah"
+}
+EOF
       }
+
     ]
   }
 }

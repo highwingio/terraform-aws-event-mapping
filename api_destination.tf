@@ -48,7 +48,7 @@ data "aws_iam_policy_document" "api_event_invoke" {
 resource "aws_iam_policy" "api_event_invoke" {
   count = length(var.targets.event_api) > 0 ? 1 : 0
 
-  name   = "eventbridge-slack-access-policy"
+  name   = "${local.name}-${var.targets.event_api[count.index].name}"
   policy = data.aws_iam_policy_document.api_event_invoke.json
 }
 

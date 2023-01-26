@@ -7,13 +7,13 @@ RSpec.describe "event api targets" do
 
   context "aws_cloudwatch_event_rules" do
     it "creates for bus targets" do
-      expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_rule').exactly(1).times
+      expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_rule').once
     end
   end
 
   context "aws_cloudwatch_event_target" do
     it "creates for rules targets" do
-      expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_target').exactly(1).times
+      expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_target').twice
     end
 
     it "specifies targets" do
@@ -36,7 +36,7 @@ RSpec.describe "event api targets" do
 
   context "aws_cloudwatch_event_api_destination" do
     it "creates for rules targets" do
-      expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_api_destination').exactly(1).times
+      expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_api_destination').twice
     end
 
     it "specifies destinations" do
@@ -49,15 +49,30 @@ RSpec.describe "event api targets" do
 
   context "aws_cloudwatch_event_connection" do
     it "creates event connection" do
-      expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_connection').exactly(1).times
+      expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_connection').twice
     end
 
     it "specifies targets" do
       expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_connection')
                          .with_attribute_value(:name, "event.HogwartsExternal-slack")
                          .with_attribute_value(:authorization_type, "API_KEY")
-                         # .with_attribute_value([:auth_parameters, 0, :api_key, 0], { key: "Authorization", value: "Bearer xoxb-rando-tokenizer" })
+      # .with_attribute_value([:auth_parameters, 0, :api_key, 0], { key: "Authorization", value: "Bearer xoxb-rando-tokenizer" })
     end
+  end
+
+  context "iam permissions" do
+    it "creates an iam policy for invocation" do
+      expect(@plan).to include_resource_creation(type: 'aws_iam_policy')
+                         .once
+                         .with_attribute_value(:name, "event.HogwartsExternal-slack")
+    end
+
+    it "creates an iam role" do
+      expect(@plan).to include_resource_creation(type: 'aws_iam_role')
+                         .once
+      e                         .with_attribute_value(:name, "event.HogwartsExternal-slack")
+    end
+
   end
 
   context "excludes" do
