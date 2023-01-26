@@ -63,7 +63,7 @@ resource "aws_iam_role" "api_event" {
   ]
 }
 
-resource "aws_cloudwatch_event_target" "slack_notification_enrichment_started" {
+resource "aws_cloudwatch_event_target" "event_api" {
   count = length(var.targets.event_api)
 
   rule           = aws_cloudwatch_event_rule.event_rule.name
