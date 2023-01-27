@@ -13,6 +13,13 @@ variable "targets" {
   type = object({
     lambda = optional(set(string), [])
     bus    = optional(set(string), [])
+    event_api = optional(list(object({
+      name : string,
+      endpoint : string,
+      token : string,
+      template_vars = optional(map(string), {}),
+      template      = string,
+    })), [])
   })
 
   validation {

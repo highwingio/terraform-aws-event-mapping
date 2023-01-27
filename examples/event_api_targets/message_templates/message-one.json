@@ -1,0 +1,11 @@
+{
+  "blocks": [
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "Under-aged student *<student_name>* has conjured an unauthorized spell."
+      }
+    }
+  ]
+}
