@@ -30,7 +30,7 @@ RSpec.describe "event api targets" do
                                }
                              }
                            ]
-                         }) + "\n")
+                         }))
     end
   end
 

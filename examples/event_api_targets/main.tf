@@ -25,23 +25,12 @@ module "named_event_mapping" {
         name : "slack"
         endpoint : "https://hooks.slack.com/services/my/random/key"
         token : "xoxb-rando-tokenizer"
+
+        template = file("${path.module}/message_templates/message-one.json")
         template_vars = {
           submission_uuid = "$.detail.student_name"
         }
 
-        template = <<EOF
-{
-  "blocks": [
-    {
-      "type": "section",
-      "text": {
-        "type": "mrkdwn",
-        "text": "Under-aged student *<student_name>* has conjured an unauthorized spell."
-      }
-    }
-  ]
-}
-EOF
       },
       {
         name : "slack-2"
