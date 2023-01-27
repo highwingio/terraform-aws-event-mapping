@@ -40,7 +40,14 @@ variable "event_patterns" {
   description = "Event patterns to listen for on source bus"
 }
 
+variable "filters" {
+  type        = map(list(string))
+  description = "Filters to apply against the event `detail`s. Must be a valid content filter (see https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-event-patterns-content-based-filtering.html)"
+  default     = null
+}
+
 locals {
   lambda_names = toset([for arn in var.targets.lambda : reverse(split(":", arn))[0]])
   name         = var.rule_name == null ? var.event_patterns[0] : var.rule_name
+  filters      = var.filters == null ? {} : { detail = var.filters }
 }

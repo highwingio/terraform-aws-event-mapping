@@ -9,15 +9,39 @@ RSpec.describe "mixed configuration tests" do
     expect(@plan).to be_a(RubyTerraform::Models::Plan)
   end
 
-  it "creates event rules" do
-    expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_rule').once
+  context "multi-target" do
+    let(:target) { "module.multi-target" }
+
+    it "creates event rules without filters" do
+      expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_rule', module_address: target)
+                         .once
+                         .with_attribute_value(:event_pattern, {
+                           "detail-type": ["event.DementorsAppear"]
+                         }.to_json)
+    end
+
+    it "creates event targets" do
+      expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_target', module_address: target).exactly(3).times
+    end
+
+    it "creates lambda permissions" do
+      expect(@plan).to include_resource_creation(type: 'aws_lambda_permission', module_address: target).exactly(2).times
+    end
   end
 
-  it "creates event targets" do
-    expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_target').exactly(3).times
-  end
+  context "added-filters" do
+    let(:target) { "module.added-filters" }
 
-  it "creates lambda permissions" do
-    expect(@plan).to include_resource_creation(type: 'aws_lambda_permission').exactly(2).times
+    it "can create additional filters against details" do
+      expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_rule', module_address: target)
+                         .once
+                         .with_attribute_value(:event_pattern, {
+                           "detail": {
+                             "class": ["unforgivable"],
+                             "type": ["curse"]
+                           },
+                           "detail-type": ["event.SpellCast"]
+                         }.to_json)
+    end
   end
 end

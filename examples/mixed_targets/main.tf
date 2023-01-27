@@ -6,9 +6,10 @@ provider "aws" {
   region = "us-east-1"
 }
 
-module "multi_target" {
-  source         = "../../"
-  bus_name       = "the-knight-bus"
+module "multi-target" {
+  source   = "../../"
+  bus_name = "the-knight-bus"
+
   event_patterns = ["event.DementorsAppear"]
 
   targets = {
@@ -18,6 +19,29 @@ module "multi_target" {
     lambda = [
       "arn:aws:lambda:us-east-1:123456789012:function:summonPatronus",
       "arn:aws:lambda:us-east-1:123456789012:function:blackOut"
+    ]
+  }
+}
+
+module "added-filters" {
+  source   = "../../"
+  bus_name = "the-knight-bus"
+
+  event_patterns = ["event.SpellCast"]
+
+  filters = {
+    type  = ["curse"],
+    class = ["unforgivable"]
+  }
+
+  targets = {
+    bus = [
+      "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"
+    ],
+    lambda = [
+      "arn:aws:lambda:us-east-1:123456789012:function:Duck",
+      "arn:aws:lambda:us-east-1:123456789012:function:Dodge",
+      "arn:aws:lambda:us-east-1:123456789012:function:Weave",
     ]
   }
 }
