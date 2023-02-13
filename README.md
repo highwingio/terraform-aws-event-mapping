@@ -58,8 +58,9 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_bus_name"></a> [bus\_name](#input\_bus\_name) | Name of the bus to receive events from | `string` | n/a | yes |
 | <a name="input_event_patterns"></a> [event\_patterns](#input\_event\_patterns) | Event patterns to listen for on source bus | `list(string)` | n/a | yes |
+| <a name="input_filters"></a> [filters](#input\_filters) | Filters to apply against the event `detail`s. Must be a valid content filter (see https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-event-patterns-content-based-filtering.html) | `map(list(string))` | `null` | no |
 | <a name="input_rule_name"></a> [rule\_name](#input\_rule\_name) | Unique name to give the event rule. If empty, will use the first event pattern. | `string` | `null` | no |
-| <a name="input_targets"></a> [targets](#input\_targets) | Targets to route event to, mapped by target type | <pre>object({<br>    lambda = optional(set(string), [])<br>    bus    = optional(set(string), [])<br>    event_api = optional(list(object({<br>      name : string,<br>      endpoint : string,<br>      token : string,<br>      template_vars = optional(map(string), {}),<br>      template      = string,<br>    })), [])<br>  })</pre> | n/a | yes |
+| <a name="input_targets"></a> [targets](#input\_targets) | Targets to route event to, mapped by target type | <pre>object({<br>    lambda = optional(map(string), {})<br>    bus    = optional(map(string), {})<br>    event_api = optional(map(object({<br>      endpoint : string,<br>      token : string,<br>      template_vars = optional(map(string), {}),<br>      template      = string,<br>    })), {})<br>  })</pre> | n/a | yes |
 
 ## Outputs
 
