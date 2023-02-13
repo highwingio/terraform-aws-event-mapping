@@ -33,15 +33,15 @@ resource "aws_cloudwatch_event_rule" "event_rule" {
 
 # handles the target mapping for lambdas and buses (event_api is more complex)
 resource "aws_cloudwatch_event_target" "event_target" {
-  for_each = setunion(var.targets.lambda, var.targets.bus)
+  for_each = merge(var.targets.lambda, var.targets.bus)
 
-  arn            = each.key
+  arn            = each.value
   rule           = aws_cloudwatch_event_rule.event_rule.name
   event_bus_name = var.bus_name
 }
 
 resource "aws_lambda_permission" "permission" {
-  for_each = local.lambda_names
+  for_each = var.targets.lambda
 
   action        = "lambda:InvokeFunction"
   function_name = each.key

@@ -15,8 +15,8 @@ module "named_event_mapping" {
   ]
 
   targets = {
-    bus = [
-      "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"
-    ]
+    bus = {
+      MofO : "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"
+    }
   }
 }
