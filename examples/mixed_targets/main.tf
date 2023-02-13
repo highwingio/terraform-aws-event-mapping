@@ -13,13 +13,13 @@ module "multi-target" {
   event_patterns = ["event.DementorsAppear"]
 
   targets = {
-    bus = [
-      "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"
-    ],
-    lambda = [
-      "arn:aws:lambda:us-east-1:123456789012:function:summonPatronus",
-      "arn:aws:lambda:us-east-1:123456789012:function:blackOut"
-    ]
+    bus = {
+      MinOfMag : "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"
+    },
+    lambda = {
+      summonPatronus : "arn:aws:lambda:us-east-1:123456789012:function:summonPatronus",
+      blackOut : "arn:aws:lambda:us-east-1:123456789012:function:blackOut"
+    }
   }
 }
 
@@ -35,13 +35,13 @@ module "added-filters" {
   }
 
   targets = {
-    bus = [
-      "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"
-    ],
-    lambda = [
-      "arn:aws:lambda:us-east-1:123456789012:function:Duck",
-      "arn:aws:lambda:us-east-1:123456789012:function:Dodge",
-      "arn:aws:lambda:us-east-1:123456789012:function:Weave",
-    ]
+    bus = {
+      ministryOfMagic : "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"
+    },
+    lambda = {
+      Duck : "arn:aws:lambda:us-east-1:123456789012:function:Duck",
+      Dodge : "arn:aws:lambda:us-east-1:123456789012:function:Dodge",
+      Weave : "arn:aws:lambda:us-east-1:123456789012:function:Weave",
+    }
   }
 }

@@ -59,7 +59,7 @@ RSpec.describe "lambda targets" do
     it "specifies permissions" do
       expect(@plan).to include_resource_creation(type: 'aws_lambda_permission')
                          .with_attribute_value(:action, "lambda:InvokeFunction")
-                         .with_attribute_value(:function_name, "summonPatronus")
+                         .with_attribute_value(:function_name, "patronus")
                          .with_attribute_value(:principal, "events.amazonaws.com")
     end
   end

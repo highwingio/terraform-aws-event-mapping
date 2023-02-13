@@ -20,9 +20,8 @@ module "named_event_mapping" {
   ]
 
   targets = {
-    event_api = [
-      {
-        name : "slack"
+    event_api = {
+      slack : {
         endpoint : "https://hooks.slack.com/services/my/random/key"
         token : "xoxb-rando-tokenizer"
 
@@ -32,8 +31,7 @@ module "named_event_mapping" {
         }
 
       },
-      {
-        name : "slack-2"
+      slack-2 : {
         endpoint : "https://hooks.slack.com/services/my/random/key"
         token : "xoxb-rando-tokenizer"
         template = <<EOF
@@ -43,6 +41,6 @@ module "named_event_mapping" {
 EOF
       }
 
-    ]
+    }
   }
 }
