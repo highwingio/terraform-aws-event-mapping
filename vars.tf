@@ -9,6 +9,12 @@ variable "rule_name" {
   default     = null
 }
 
+variable "enabled" {
+  type        = bool
+  description = "Enable or disable the event mapping"
+  default     = true
+}
+
 variable "targets" {
   type = object({
     lambda = optional(map(string), {})

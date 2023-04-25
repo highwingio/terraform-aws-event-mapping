@@ -25,6 +25,7 @@
 resource "aws_cloudwatch_event_rule" "event_rule" {
   name           = local.name
   event_bus_name = var.bus_name
+  is_enabled     = var.enabled
 
   event_pattern = jsonencode(merge({
     detail-type : var.event_patterns

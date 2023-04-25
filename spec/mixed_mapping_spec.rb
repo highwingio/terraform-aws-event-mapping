@@ -9,6 +9,16 @@ RSpec.describe "mixed configuration tests" do
     expect(@plan).to be_a(RubyTerraform::Models::Plan)
   end
 
+  context "disabled" do
+    let(:target) { "module.disabled" }
+
+    it "creates a disabled rule" do
+      expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_rule', module_address: target)
+        .once
+        .with_attribute_value(:is_enabled, false)
+    end
+  end
+
   context "multi-target" do
     let(:target) { "module.multi-target" }
 

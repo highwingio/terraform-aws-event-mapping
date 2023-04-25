@@ -6,6 +6,21 @@ provider "aws" {
   region = "us-east-1"
 }
 
+module "disabled" {
+  source   = "../../"
+  bus_name = "the-knight-bus"
+
+  enabled        = false
+  event_patterns = ["event.HitTheBreaks"]
+
+  targets = {
+    lambda = {
+      busStop : "arn:aws:lambda:us-east-1:123456789012:function:stopBus",
+    }
+  }
+}
+
+
 module "multi-target" {
   source   = "../../"
   bus_name = "the-knight-bus"
