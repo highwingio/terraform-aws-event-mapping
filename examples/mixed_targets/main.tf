@@ -28,6 +28,9 @@ module "multi-target" {
   event_patterns = ["event.DementorsAppear"]
 
   targets = {
+    sqs = {
+      SortingHat : "arn:aws:sqs:us-east-1:123456789012:screamProphecy"
+    }
     bus = {
       MinOfMag : "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"
     },

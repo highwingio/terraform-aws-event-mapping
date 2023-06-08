@@ -19,6 +19,7 @@ variable "targets" {
   type = object({
     lambda = optional(map(string), {})
     bus    = optional(map(string), {})
+    sqs    = optional(map(string), {})
     event_api = optional(map(object({
       endpoint : string,
       token : string,
@@ -34,6 +35,11 @@ variable "targets" {
 
   validation {
     condition     = alltrue([for name, arn in var.targets.bus : can(regex("arn:aws:events:[a-z,0-9,-]+:\\d{12}:event-bus/", arn))])
+    error_message = "The bus set may only contain event bus ARNs."
+  }
+
+  validation {
+    condition     = alltrue([for name, arn in var.targets.sqs : can(regex("arn:aws:sqs:[a-z,0-9,-]+:\\d{12}:", arn))])
     error_message = "The bus set may only contain event bus ARNs."
   }
 

@@ -31,7 +31,7 @@ RSpec.describe "mixed configuration tests" do
     end
 
     it "creates event targets" do
-      expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_target', module_address: target).exactly(3).times
+      expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_target', module_address: target).exactly(4).times
     end
 
     it "creates lambda permissions" do
