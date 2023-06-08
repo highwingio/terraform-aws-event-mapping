@@ -32,9 +32,9 @@ resource "aws_cloudwatch_event_rule" "event_rule" {
   }, local.filters))
 }
 
-# handles the target mapping for lambdas and buses (event_api is more complex)
+# handles the target mapping for lambdas, buses, and sqs (event_api is more complex)
 resource "aws_cloudwatch_event_target" "event_target" {
-  for_each = merge(var.targets.lambda, var.targets.bus)
+  for_each = merge(var.targets.lambda, var.targets.bus, var.targets.sqs)
 
   arn            = each.value
   rule           = aws_cloudwatch_event_rule.event_rule.name
