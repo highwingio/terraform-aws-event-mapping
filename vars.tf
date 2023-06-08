@@ -40,7 +40,7 @@ variable "targets" {
 
   validation {
     condition     = alltrue([for name, arn in var.targets.sqs : can(regex("arn:aws:sqs:[a-z,0-9,-]+:\\d{12}:", arn))])
-    error_message = "The bus set may only contain event bus ARNs."
+    error_message = "The sqs set may only contain sqs queue ARNs."
   }
 
   description = "Targets to route event to, mapped by target type"
