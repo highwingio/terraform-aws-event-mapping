@@ -20,7 +20,6 @@ module "disabled" {
   }
 }
 
-
 module "multi-target" {
   source   = "../../"
   bus_name = "the-knight-bus"
