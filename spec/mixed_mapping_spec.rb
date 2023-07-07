@@ -37,6 +37,11 @@ RSpec.describe "mixed configuration tests" do
     it "creates lambda permissions" do
       expect(@plan).to include_resource_creation(type: 'aws_lambda_permission', module_address: target).exactly(2).times
     end
+
+    # Fix this
+    xit "outputs the event rule arn" do
+      expect(@plan).to include_output(value: 'event_rule_arn')
+    end
   end
 
   context "added-filters" do
