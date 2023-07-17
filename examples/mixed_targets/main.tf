@@ -62,3 +62,17 @@ module "added-filters" {
     }
   }
 }
+
+module "any-events" {
+  source   = "../../"
+  bus_name = "the-knight-bus"
+
+  rule_name  = "CatchAll"
+  all_events = true
+
+  targets = {
+    bus = {
+      ministryOfMagic : "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"
+    }
+  }
+}

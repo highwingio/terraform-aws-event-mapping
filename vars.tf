@@ -5,7 +5,7 @@ variable "bus_name" {
 
 variable "rule_name" {
   type        = string
-  description = "Unique name to give the event rule. If empty, will use the first event pattern."
+  description = "Unique name to give the event rule. If empty, will use the first event pattern. Required if using `all_events`"
   default     = null
 }
 
@@ -29,12 +29,16 @@ variable "targets" {
   })
 
   validation {
-    condition     = alltrue([for name, arn in var.targets.lambda : can(regex("arn:aws:lambda:[a-z,0-9,-]+:\\d{12}:function:", arn))])
+    condition = alltrue([
+      for name, arn in var.targets.lambda : can(regex("arn:aws:lambda:[a-z,0-9,-]+:\\d{12}:function:", arn))
+    ])
     error_message = "The lambda set may only contain lambda ARNs."
   }
 
   validation {
-    condition     = alltrue([for name, arn in var.targets.bus : can(regex("arn:aws:events:[a-z,0-9,-]+:\\d{12}:event-bus/", arn))])
+    condition = alltrue([
+      for name, arn in var.targets.bus : can(regex("arn:aws:events:[a-z,0-9,-]+:\\d{12}:event-bus/", arn))
+    ])
     error_message = "The bus set may only contain event bus ARNs."
   }
 
@@ -48,7 +52,14 @@ variable "targets" {
 
 variable "event_patterns" {
   type        = list(string)
-  description = "Event patterns to listen for on source bus"
+  default     = []
+  description = "Event patterns to listen for on source bus."
+}
+
+variable "all_events" {
+  type        = bool
+  default     = false
+  description = "Trigger on any event. Ignores `event_patterns` if specified."
 }
 
 variable "filters" {
@@ -59,6 +70,7 @@ variable "filters" {
 
 locals {
   #  lambda_names = toset([for arn in var.targets.lambda : reverse(split(":", arn))[0]])
-  name    = var.rule_name == null ? var.event_patterns[0] : var.rule_name
-  filters = var.filters == null ? {} : { detail = var.filters }
+  name        = var.rule_name == null ? var.event_patterns[0] : var.rule_name
+  all_pattern = var.all_events ? [{ prefix : "" }] : []
+  filters     = var.filters == null ? {} : { detail = var.filters }
 }

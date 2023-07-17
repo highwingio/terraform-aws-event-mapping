@@ -59,4 +59,16 @@ RSpec.describe "mixed configuration tests" do
                          }.to_json)
     end
   end
+
+  context "any-events" do
+    let(:target) { "module.any-events" }
+
+    it "can capture all events" do
+      expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_rule', module_address: target)
+                         .once
+                         .with_attribute_value(:event_pattern, {
+                           "detail-type": [ { "prefix": "" } ]
+                         }.to_json)
+    end
+  end
 end
