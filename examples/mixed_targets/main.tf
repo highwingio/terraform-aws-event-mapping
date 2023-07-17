@@ -20,7 +20,6 @@ module "disabled" {
   }
 }
 
-
 module "multi-target" {
   source   = "../../"
   bus_name = "the-knight-bus"
@@ -60,6 +59,20 @@ module "added-filters" {
       Duck : "arn:aws:lambda:us-east-1:123456789012:function:Duck",
       Dodge : "arn:aws:lambda:us-east-1:123456789012:function:Dodge",
       Weave : "arn:aws:lambda:us-east-1:123456789012:function:Weave",
+    }
+  }
+}
+
+module "any-events" {
+  source   = "../../"
+  bus_name = "the-knight-bus"
+
+  rule_name  = "CatchAll"
+  all_events = true
+
+  targets = {
+    bus = {
+      ministryOfMagic : "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"
     }
   }
 }
