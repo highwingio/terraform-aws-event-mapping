@@ -56,6 +56,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_accounts"></a> [accounts](#input\_accounts) | Allowed accounts | `list(string)` | `null` | no |
 | <a name="input_all_events"></a> [all\_events](#input\_all\_events) | Trigger on any event. Ignores `event_patterns` if specified. | `bool` | `false` | no |
 | <a name="input_bus_name"></a> [bus\_name](#input\_bus\_name) | Name of the bus to receive events from | `string` | n/a | yes |
 | <a name="input_enabled"></a> [enabled](#input\_enabled) | Enable or disable the event mapping | `bool` | `true` | no |
