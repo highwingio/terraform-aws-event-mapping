@@ -68,9 +68,16 @@ variable "filters" {
   default     = null
 }
 
+variable "accounts" {
+  type        = list(string)
+  description = "Allowed accounts"
+  default     = null
+}
+
 locals {
   #  lambda_names = toset([for arn in var.targets.lambda : reverse(split(":", arn))[0]])
   name        = var.rule_name == null ? var.event_patterns[0] : var.rule_name
   all_pattern = var.all_events ? [{ prefix : "" }] : []
   filters     = var.filters == null ? {} : { detail = var.filters }
+  accounts    = var.accounts == null ? {} : { account = var.accounts }
 }

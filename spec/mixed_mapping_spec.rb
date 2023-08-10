@@ -51,6 +51,7 @@ RSpec.describe "mixed configuration tests" do
       expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_rule', module_address: target)
                          .once
                          .with_attribute_value(:event_pattern, {
+                           "account": %w[123456789012 098765432109],
                            "detail": {
                              "class": ["unforgivable"],
                              "type": ["curse"]

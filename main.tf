@@ -29,7 +29,7 @@ resource "aws_cloudwatch_event_rule" "event_rule" {
 
   event_pattern = jsonencode(merge({
     detail-type : concat(var.event_patterns, local.all_pattern)
-  }, local.filters))
+  }, local.filters, local.accounts))
 }
 
 # handles the target mapping for lambdas, buses, and sqs (event_api is more complex)

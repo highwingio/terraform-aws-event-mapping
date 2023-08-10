@@ -51,6 +51,8 @@ module "added-filters" {
     class = ["unforgivable"]
   }
 
+  accounts = ["123456789012", "098765432109"]
+
   targets = {
     bus = {
       ministryOfMagic : "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"
