@@ -56,14 +56,15 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_accounts"></a> [accounts](#input\_accounts) | Allowed accounts | `list(string)` | `null` | no |
 | <a name="input_all_events"></a> [all\_events](#input\_all\_events) | Trigger on any event. Ignores `event_patterns` if specified. | `bool` | `false` | no |
+| <a name="input_allow_accounts"></a> [allow\_accounts](#input\_allow\_accounts) | Allowed accounts. Will override `ignore_accounts` if present. | `list(string)` | `[]` | no |
 | <a name="input_bus_name"></a> [bus\_name](#input\_bus\_name) | Name of the bus to receive events from | `string` | n/a | yes |
 | <a name="input_enabled"></a> [enabled](#input\_enabled) | Enable or disable the event mapping | `bool` | `true` | no |
 | <a name="input_event_patterns"></a> [event\_patterns](#input\_event\_patterns) | Event patterns to listen for on source bus. | `list(string)` | `[]` | no |
 | <a name="input_filters"></a> [filters](#input\_filters) | Filters to apply against the event `detail`s. Must be a valid content filter (see https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-event-patterns-content-based-filtering.html) | `map(list(string))` | `null` | no |
+| <a name="input_ignore_accounts"></a> [ignore\_accounts](#input\_ignore\_accounts) | Ignored accounts. Will be overridden by `allow_accounts` if present. | `list(string)` | `[]` | no |
 | <a name="input_rule_name"></a> [rule\_name](#input\_rule\_name) | Unique name to give the event rule. If empty, will use the first event pattern. Required if using `all_events` | `string` | `null` | no |
-| <a name="input_targets"></a> [targets](#input\_targets) | Targets to route event to, mapped by target type | <pre>object({<br>    lambda = optional(map(string), {})<br>    bus    = optional(map(string), {})<br>    sqs    = optional(map(string), {})<br>    event_api = optional(map(object({<br>      endpoint : string,<br>      token : string,<br>      template_vars = optional(map(string), {}),<br>      template      = string,<br>    })), {})<br>  })</pre> | n/a | yes |
+| <a name="input_targets"></a> [targets](#input\_targets) | Targets to route event to, mapped by target type | <pre>object({<br>    lambda    = optional(map(string), {})<br>    bus       = optional(map(string), {})<br>    sqs       = optional(map(string), {})<br>    event_api = optional(map(object({<br>      endpoint : string,<br>      token : string,<br>      template_vars = optional(map(string), {}),<br>      template      = string,<br>    })), {})<br>  })</pre> | n/a | yes |
 
 ## Outputs
 
