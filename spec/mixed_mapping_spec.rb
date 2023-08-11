@@ -75,12 +75,27 @@ RSpec.describe "mixed configuration tests" do
 
   context "ignored-accounts" do
     let(:target) { "module.ignored-accounts" }
+    let(:current_account) { @plan.to_h.dig(:prior_state, :values, :root_module, :resources, 0, :values, :account_id) }
 
-    it "can filter out accounts" do
+    it "can filter out accounts and includes caller account when designated" do
       expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_rule', module_address: target)
                          .once
                          .with_attribute_value(:event_pattern, {
-                           "account": { "anything-but": %w[2828282828282 949494949494] },
+                           "account": { "anything-but": ["2828282828282", "949494949494", current_account] },
+                           "detail-type": [ "speak:RoomOfRequirement" ]
+                         }.to_json)
+    end
+  end
+
+  context "ignored-self" do
+    let(:target) { "module.ignored-self" }
+    let(:current_account) { @plan.to_h.dig(:prior_state, :values, :root_module, :resources, 0, :values, :account_id) }
+
+    it "can filter caller account only" do
+      expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_rule', module_address: target)
+                         .once
+                         .with_attribute_value(:event_pattern, {
+                           "account": { "anything-but": [current_account] },
                            "detail-type": [ "speak:RoomOfRequirement" ]
                          }.to_json)
     end

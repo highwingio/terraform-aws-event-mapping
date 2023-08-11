@@ -80,12 +80,31 @@ module "any-events" {
   }
 }
 
+data "aws_caller_identity" "self" {}
+
 module "ignored-accounts" {
   source   = "../../"
   bus_name = "the-knight-bus"
 
   rule_name       = "IgnoreAccounts"
   ignore_accounts = ["2828282828282", "949494949494"]
+  exclude_self    = true
+
+  event_patterns = ["speak:RoomOfRequirement"]
+
+  targets = {
+    bus = {
+      ministryOfMagic : "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"
+    }
+  }
+}
+
+module "ignored-self" {
+  source   = "../../"
+  bus_name = "the-knight-bus"
+
+  rule_name    = "IgnoreSelf"
+  exclude_self = true
 
   event_patterns = ["speak:RoomOfRequirement"]
 
