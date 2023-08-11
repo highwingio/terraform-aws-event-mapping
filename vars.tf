@@ -15,6 +15,12 @@ variable "enabled" {
   default     = true
 }
 
+variable "exclude_self" {
+  type        = bool
+  description = "Exclude the calling account's events"
+  default     = false
+}
+
 variable "targets" {
   type = object({
     lambda = optional(map(string), {})
@@ -92,9 +98,10 @@ variable "ignore_accounts" {
 
 locals {
   #  lambda_names = toset([for arn in var.targets.lambda : reverse(split(":", arn))[0]])
-  name         = var.rule_name == null ? var.event_patterns[0] : var.rule_name
-  all_pattern  = var.all_events ? [{ prefix : "" }] : []
-  filters      = var.filters == null ? {} : { detail = var.filters }
-  accounts     = length(var.allow_accounts) == 0 ? {} : { account = var.allow_accounts }
-  not_accounts = length(var.ignore_accounts) == 0 ? {} : { account = { "anything-but" : var.ignore_accounts } }
+  name            = var.rule_name == null ? var.event_patterns[0] : var.rule_name
+  all_pattern     = var.all_events ? [{ prefix : "" }] : []
+  filters         = var.filters == null ? {} : { detail = var.filters }
+  accounts        = length(var.allow_accounts) == 0 ? {} : { account = var.allow_accounts }
+  ignore_accounts = var.exclude_self ? concat(var.ignore_accounts, [data.aws_caller_identity.self.account_id]) : var.ignore_accounts
+  not_accounts    = length(local.ignore_accounts) == 0 ? {} : { account = { "anything-but" : local.ignore_accounts } }
 }
