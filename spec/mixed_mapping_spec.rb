@@ -72,4 +72,17 @@ RSpec.describe "mixed configuration tests" do
                          }.to_json)
     end
   end
+
+  context "ignored-accounts" do
+    let(:target) { "module.ignored-accounts" }
+
+    it "can filter out accounts" do
+      expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_rule', module_address: target)
+                         .once
+                         .with_attribute_value(:event_pattern, {
+                           "account": { "anything-but": %w[2828282828282 949494949494] },
+                           "detail-type": [ "speak:RoomOfRequirement" ]
+                         }.to_json)
+    end
+  end
 end

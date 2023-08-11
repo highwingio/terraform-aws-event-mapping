@@ -68,16 +68,33 @@ variable "filters" {
   default     = null
 }
 
-variable "accounts" {
+variable "allow_accounts" {
   type        = list(string)
-  description = "Allowed accounts"
-  default     = null
+  description = "Allowed accounts. Will override `ignore_accounts` if present."
+  default     = []
+
+  validation {
+    condition     = alltrue([for id in var.allow_accounts : can(regex("\\d{12}", id))])
+    error_message = "Please provide valid account IDs"
+  }
+}
+
+variable "ignore_accounts" {
+  type        = list(string)
+  description = "Ignored accounts. Will be overridden by `allow_accounts` if present."
+  default     = []
+
+  validation {
+    condition     = alltrue([for id in var.ignore_accounts : can(regex("\\d{12}", id))])
+    error_message = "Please provide valid account IDs"
+  }
 }
 
 locals {
   #  lambda_names = toset([for arn in var.targets.lambda : reverse(split(":", arn))[0]])
-  name        = var.rule_name == null ? var.event_patterns[0] : var.rule_name
-  all_pattern = var.all_events ? [{ prefix : "" }] : []
-  filters     = var.filters == null ? {} : { detail = var.filters }
-  accounts    = var.accounts == null ? {} : { account = var.accounts }
+  name         = var.rule_name == null ? var.event_patterns[0] : var.rule_name
+  all_pattern  = var.all_events ? [{ prefix : "" }] : []
+  filters      = var.filters == null ? {} : { detail = var.filters }
+  accounts     = length(var.allow_accounts) == 0 ? {} : { account = var.allow_accounts }
+  not_accounts = length(var.ignore_accounts) == 0 ? {} : { account = { "anything-but" : var.ignore_accounts } }
 }

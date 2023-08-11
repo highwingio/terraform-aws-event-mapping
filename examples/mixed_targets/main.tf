@@ -51,7 +51,8 @@ module "added-filters" {
     class = ["unforgivable"]
   }
 
-  accounts = ["123456789012", "098765432109"]
+  allow_accounts  = ["123456789012", "098765432109"]
+  ignore_accounts = ["2828282828282", "949494949494"] # this should be overwritten by the `allow_accounts` spec as more restrictive
 
   targets = {
     bus = {
@@ -71,6 +72,22 @@ module "any-events" {
 
   rule_name  = "CatchAll"
   all_events = true
+
+  targets = {
+    bus = {
+      ministryOfMagic : "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"
+    }
+  }
+}
+
+module "ignored-accounts" {
+  source   = "../../"
+  bus_name = "the-knight-bus"
+
+  rule_name       = "IgnoreAccounts"
+  ignore_accounts = ["2828282828282", "949494949494"]
+
+  event_patterns = ["speak:RoomOfRequirement"]
 
   targets = {
     bus = {
