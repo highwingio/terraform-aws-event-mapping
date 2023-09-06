@@ -26,6 +26,7 @@ variable "targets" {
     lambda = optional(map(string), {})
     bus    = optional(map(string), {})
     sqs    = optional(map(string), {})
+    sfn    = optional(map(string), {})
     event_api = optional(map(object({
       endpoint : string,
       token : string,
@@ -51,6 +52,11 @@ variable "targets" {
   validation {
     condition     = alltrue([for name, arn in var.targets.sqs : can(regex("arn:aws:sqs:[a-z,0-9,-]+:\\d{12}:", arn))])
     error_message = "The sqs set may only contain sqs queue ARNs."
+  }
+
+  validation {
+    condition     = alltrue([for name, arn in var.targets.sfn : can(regex("arn:aws:states:[a-z,0-9,-]+:\\d{12}:stateMachine:", arn))])
+    error_message = "The sfn set may only contain step function ARNs."
   }
 
   description = "Targets to route event to, mapped by target type"
