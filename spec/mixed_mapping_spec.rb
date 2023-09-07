@@ -38,6 +38,22 @@ RSpec.describe "mixed configuration tests" do
       expect(@plan).to include_resource_creation(type: 'aws_lambda_permission', module_address: target).exactly(2).times
     end
 
+    context "aws_iam_role" do
+      it "creates iam role for target" do
+        expect(@plan).to include_resource_creation(type: 'aws_iam_role', module_address: target).exactly(1).times
+        expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy', module_address: target).exactly(3).times
+      end
+
+      it "permits only actions required" do
+        expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy', module_address: target)
+                           .with_attribute_value(:name, "invoke-lambda")
+        expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy', module_address: target)
+                           .with_attribute_value(:name, "invoke-bus")
+        expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy', module_address: target)
+                           .with_attribute_value(:name, "invoke-sqs")
+      end
+    end
+
     # Fix this
     xit "outputs the event rule arn" do
       expect(@plan).to include_output(value: 'event_rule_arn')
@@ -58,6 +74,18 @@ RSpec.describe "mixed configuration tests" do
                            },
                            "detail-type": ["event.SpellCast"]
                          }.to_json)
+    end
+
+    it "permits resources properly" do
+      expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy', module_address: target).exactly(2).times
+
+      expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy', module_address: target)
+                         .with_attribute_value(:name, "invoke-lambda")
+                         .with_attribute_value(:policy, include("function:Duck", "function:Dodge", "function:Weave"))
+
+      expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy', module_address: target)
+                         .with_attribute_value(:name, "invoke-bus")
+                         .with_attribute_value(:policy, include("event-bus/ministryOfMagic"))
     end
   end
 

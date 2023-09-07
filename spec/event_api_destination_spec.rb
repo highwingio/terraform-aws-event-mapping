@@ -60,19 +60,22 @@ RSpec.describe "event api targets" do
     end
   end
 
-  context "iam permissions" do
-    it "creates a single iam policy for invocation" do
-      expect(@plan).to include_resource_creation(type: 'aws_iam_policy')
-                         .once
-                         .with_attribute_value(:name, "event.HogwartsExternal")
+
+  context "aws_iam_role" do
+    it "creates iam role for target" do
+      expect(@plan).to include_resource_creation(type: 'aws_iam_role').exactly(1).times
+      expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy').exactly(1).times
     end
 
-    it "creates a single iam role" do
-      expect(@plan).to include_resource_creation(type: 'aws_iam_role')
-                         .once
-                         .with_attribute_value(:name, "event.HogwartsExternal")
-    end
+    it "permits only actions required" do
+      expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy')
+                         .with_attribute_value(:name, "invoke-api")
 
+      # can't currently validate this because the policy is generated based on the ARNs created by
+      # other resources
+      # .with_attribute_value(:policy, include("events:InvokeApiDestination"))
+
+    end
   end
 
   context "excludes" do

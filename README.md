@@ -46,12 +46,20 @@ No modules.
 | [aws_cloudwatch_event_rule.event_rule](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_event_rule) | resource |
 | [aws_cloudwatch_event_target.event_api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_event_target) | resource |
 | [aws_cloudwatch_event_target.event_target](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_event_target) | resource |
-| [aws_iam_policy.api_event_invoke](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
-| [aws_iam_role.api_event](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role.event_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role_policy.api_events](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
+| [aws_iam_role_policy.bus_events](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
+| [aws_iam_role_policy.lambda_events](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
+| [aws_iam_role_policy.sfn_events](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
+| [aws_iam_role_policy.sqs_events](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
 | [aws_lambda_permission.permission](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
 | [aws_caller_identity.self](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_iam_policy_document.api_event_invoke](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_iam_policy_document.event_api_assume_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.assume_role_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.bus_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.lambda_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.sfn_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.sqs_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 
 ## Inputs
 
@@ -66,11 +74,10 @@ No modules.
 | <a name="input_filters"></a> [filters](#input\_filters) | Filters to apply against the event `detail`s. Must be a valid content filter (see https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-event-patterns-content-based-filtering.html) | `map(list(string))` | `null` | no |
 | <a name="input_ignore_accounts"></a> [ignore\_accounts](#input\_ignore\_accounts) | Ignored accounts. Will be overridden by `allow_accounts` if present. | `list(string)` | `[]` | no |
 | <a name="input_rule_name"></a> [rule\_name](#input\_rule\_name) | Unique name to give the event rule. If empty, will use the first event pattern. Required if using `all_events` | `string` | `null` | no |
-| <a name="input_targets"></a> [targets](#input\_targets) | Targets to route event to, mapped by target type | <pre>object({<br>    lambda = optional(map(string), {})<br>    bus    = optional(map(string), {})<br>    sqs    = optional(map(string), {})<br>    event_api = optional(map(object({<br>      endpoint : string,<br>      token : string,<br>      template_vars = optional(map(string), {}),<br>      template      = string,<br>    })), {})<br>  })</pre> | n/a | yes |
+| <a name="input_targets"></a> [targets](#input\_targets) | Targets to route event to, mapped by target type | <pre>object({<br>    lambda = optional(map(string), {})<br>    bus    = optional(map(string), {})<br>    sqs    = optional(map(string), {})<br>    sfn    = optional(map(string), {})<br>    event_api = optional(map(object({<br>      endpoint : string,<br>      token : string,<br>      template_vars = optional(map(string), {}),<br>      template      = string,<br>    })), {})<br>  })</pre> | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_account_id"></a> [account\_id](#output\_account\_id) | n/a |
 | <a name="output_event_rule_arn"></a> [event\_rule\_arn](#output\_event\_rule\_arn) | n/a |
