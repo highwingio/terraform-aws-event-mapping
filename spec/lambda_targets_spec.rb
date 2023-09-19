@@ -52,15 +52,9 @@ RSpec.describe "lambda targets" do
   end
 
   context "aws_iam_role" do
-    it "creates iam role for target" do
-      expect(@plan).to include_resource_creation(type: 'aws_iam_role').exactly(2).times
-      expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy').exactly(2).times
-    end
-
-    it "permits only actions required" do
-      expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy')
-                         .with_attribute_value(:name, "invoke-lambda")
-                         .with_attribute_value(:policy, include("lambda:InvokeFunction"))
+    it "does not create iam role for target" do
+      expect(@plan).to include_resource_creation(type: 'aws_iam_role').exactly(0).times
+      expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy').exactly(0).times
     end
   end
 

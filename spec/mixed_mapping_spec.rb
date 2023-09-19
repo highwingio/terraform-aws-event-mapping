@@ -14,8 +14,8 @@ RSpec.describe "mixed configuration tests" do
 
     it "creates a disabled rule" do
       expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_rule', module_address: target)
-        .once
-        .with_attribute_value(:is_enabled, false)
+                         .once
+                         .with_attribute_value(:is_enabled, false)
     end
   end
 
@@ -41,16 +41,12 @@ RSpec.describe "mixed configuration tests" do
     context "aws_iam_role" do
       it "creates iam role for target" do
         expect(@plan).to include_resource_creation(type: 'aws_iam_role', module_address: target).exactly(1).times
-        expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy', module_address: target).exactly(3).times
+        expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy', module_address: target).exactly(1).times
       end
 
       it "permits only actions required" do
         expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy', module_address: target)
-                           .with_attribute_value(:name, "invoke-lambda")
-        expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy', module_address: target)
                            .with_attribute_value(:name, "invoke-bus")
-        expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy', module_address: target)
-                           .with_attribute_value(:name, "invoke-sqs")
       end
     end
 
@@ -77,11 +73,7 @@ RSpec.describe "mixed configuration tests" do
     end
 
     it "permits resources properly" do
-      expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy', module_address: target).exactly(2).times
-
-      expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy', module_address: target)
-                         .with_attribute_value(:name, "invoke-lambda")
-                         .with_attribute_value(:policy, include("function:Duck", "function:Dodge", "function:Weave"))
+      expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy', module_address: target).exactly(1).times
 
       expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy', module_address: target)
                          .with_attribute_value(:name, "invoke-bus")
@@ -96,7 +88,7 @@ RSpec.describe "mixed configuration tests" do
       expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_rule', module_address: target)
                          .once
                          .with_attribute_value(:event_pattern, {
-                           "detail-type": [ { "prefix": "" } ]
+                           "detail-type": [{ "prefix": "" }]
                          }.to_json)
     end
   end
@@ -110,7 +102,7 @@ RSpec.describe "mixed configuration tests" do
                          .once
                          .with_attribute_value(:event_pattern, {
                            "account": { "anything-but": ["2828282828282", "949494949494", current_account] },
-                           "detail-type": [ "speak:RoomOfRequirement" ]
+                           "detail-type": ["speak:RoomOfRequirement"]
                          }.to_json)
     end
   end
@@ -124,7 +116,26 @@ RSpec.describe "mixed configuration tests" do
                          .once
                          .with_attribute_value(:event_pattern, {
                            "account": { "anything-but": [current_account] },
-                           "detail-type": [ "speak:RoomOfRequirement" ]
+                           "detail-type": ["speak:RoomOfRequirement"]
+                         }.to_json)
+    end
+  end
+
+  context "nested-filters" do
+    let(:target) { "module.nested-filters" }
+
+    it "can build nested filters " do
+      expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_rule', module_address: target)
+                         .once
+                         .with_attribute_value(:event_pattern, {
+                           "detail": {
+                             "punishment": {
+                               "level": {
+                                 "strictest": [true]
+                               }
+                             }
+                           },
+                           "detail-type": ["cast:spell:unforgivable"]
                          }.to_json)
     end
   end
