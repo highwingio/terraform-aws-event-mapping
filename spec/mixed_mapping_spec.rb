@@ -41,16 +41,12 @@ RSpec.describe "mixed configuration tests" do
     context "aws_iam_role" do
       it "creates iam role for target" do
         expect(@plan).to include_resource_creation(type: 'aws_iam_role', module_address: target).exactly(1).times
-        expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy', module_address: target).exactly(3).times
+        expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy', module_address: target).exactly(1).times
       end
 
       it "permits only actions required" do
         expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy', module_address: target)
-                           .with_attribute_value(:name, "invoke-lambda")
-        expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy', module_address: target)
                            .with_attribute_value(:name, "invoke-bus")
-        expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy', module_address: target)
-                           .with_attribute_value(:name, "invoke-sqs")
       end
     end
 
@@ -77,11 +73,7 @@ RSpec.describe "mixed configuration tests" do
     end
 
     it "permits resources properly" do
-      expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy', module_address: target).exactly(2).times
-
-      expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy', module_address: target)
-                         .with_attribute_value(:name, "invoke-lambda")
-                         .with_attribute_value(:policy, include("function:Duck", "function:Dodge", "function:Weave"))
+      expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy', module_address: target).exactly(1).times
 
       expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy', module_address: target)
                          .with_attribute_value(:name, "invoke-bus")

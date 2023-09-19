@@ -1,3 +1,9 @@
+locals {
+  iam_service_types = ["bus", "event_api", "sfn"]
+  target_types      = [for k, v in var.targets : k if length(v) > 0]
+  needs_iam         = length(setintersection(local.iam_service_types, local.target_types)) > 0
+}
+
 data "aws_iam_policy_document" "assume_role_policy" {
   statement {
     actions = ["sts:AssumeRole"]
@@ -9,6 +15,8 @@ data "aws_iam_policy_document" "assume_role_policy" {
 }
 
 resource "aws_iam_role" "event_role" {
+  count = local.needs_iam ? 1 : 0
+
   name               = local.name
   assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
 }
@@ -17,20 +25,6 @@ data "aws_iam_policy_document" "sfn_policy" {
   statement {
     actions   = ["states:StartExecution"]
     resources = values(var.targets.sfn)
-  }
-}
-
-data "aws_iam_policy_document" "lambda_policy" {
-  statement {
-    actions   = ["lambda:InvokeFunction"]
-    resources = values(var.targets.lambda)
-  }
-}
-
-data "aws_iam_policy_document" "sqs_policy" {
-  statement {
-    actions   = ["sqs:SendMessage"]
-    resources = values(var.targets.sqs)
   }
 }
 
@@ -54,31 +48,15 @@ resource "aws_iam_role_policy" "api_events" {
   count = length(var.targets.event_api) > 0 ? 1 : 0
 
   name   = "invoke-api"
-  role   = aws_iam_role.event_role.id
+  role   = aws_iam_role.event_role[0].id
   policy = data.aws_iam_policy_document.api_event_invoke.json
-}
-
-resource "aws_iam_role_policy" "sqs_events" {
-  count = length(var.targets.sqs) > 0 ? 1 : 0
-
-  name   = "invoke-sqs"
-  role   = aws_iam_role.event_role.id
-  policy = data.aws_iam_policy_document.sqs_policy.json
-}
-
-resource "aws_iam_role_policy" "lambda_events" {
-  count = length(var.targets.lambda) > 0 ? 1 : 0
-
-  name   = "invoke-lambda"
-  role   = aws_iam_role.event_role.id
-  policy = data.aws_iam_policy_document.lambda_policy.json
 }
 
 resource "aws_iam_role_policy" "bus_events" {
   count = length(var.targets.bus) > 0 ? 1 : 0
 
   name   = "invoke-bus"
-  role   = aws_iam_role.event_role.id
+  role   = aws_iam_role.event_role[0].id
   policy = data.aws_iam_policy_document.bus_policy.json
 }
 
@@ -86,6 +64,6 @@ resource "aws_iam_role_policy" "sfn_events" {
   count = length(var.targets.sfn) > 0 ? 1 : 0
 
   name   = "invoke-sfn"
-  role   = aws_iam_role.event_role.id
+  role   = aws_iam_role.event_role[0].id
   policy = data.aws_iam_policy_document.sfn_policy.json
 }

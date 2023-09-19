@@ -29,7 +29,7 @@ resource "aws_cloudwatch_event_target" "event_api" {
 
   rule           = aws_cloudwatch_event_rule.event_rule.name
   arn            = aws_cloudwatch_event_api_destination.destination[each.key].arn
-  role_arn       = aws_iam_role.event_role.arn
+  role_arn       = aws_iam_role.event_role[0].arn
   event_bus_name = var.bus_name
 
   input_transformer {

@@ -37,7 +37,7 @@ resource "aws_cloudwatch_event_target" "event_target" {
   for_each = merge(var.targets.lambda, var.targets.bus, var.targets.sqs, var.targets.sfn)
 
   arn            = each.value
-  role_arn       = aws_iam_role.event_role.arn
+  role_arn       = local.needs_iam ? aws_iam_role.event_role[0].arn : null
   rule           = aws_cloudwatch_event_rule.event_rule.name
   event_bus_name = var.bus_name
 }
