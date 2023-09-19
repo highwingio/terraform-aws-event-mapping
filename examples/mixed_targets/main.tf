@@ -114,3 +114,25 @@ module "ignored-self" {
     }
   }
 }
+
+module "nested-filters" {
+  source   = "../../"
+  bus_name = "the-knight-bus"
+
+  rule_name = "NestingFilters"
+
+  event_patterns = ["cast:spell:unforgivable"]
+  filters = {
+    punishment = {
+      level = {
+        strictest = [true]
+      }
+    }
+  }
+
+  targets = {
+    bus = {
+      ministryOfMagic : "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"
+    }
+  }
+}

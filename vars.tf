@@ -75,8 +75,8 @@ variable "all_events" {
 }
 
 variable "filters" {
-  type        = map(list(string))
-  description = "Filters to apply against the event `detail`s. Must be a valid content filter (see https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-event-patterns-content-based-filtering.html)"
+  type        = map(any)
+  description = "Filters to apply against the event `detail`s. Must be a valid content filter (see [docs](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-event-patterns-content-based-filtering.html))"
   default     = null
 }
 

@@ -14,8 +14,8 @@ RSpec.describe "mixed configuration tests" do
 
     it "creates a disabled rule" do
       expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_rule', module_address: target)
-        .once
-        .with_attribute_value(:is_enabled, false)
+                         .once
+                         .with_attribute_value(:is_enabled, false)
     end
   end
 
@@ -96,7 +96,7 @@ RSpec.describe "mixed configuration tests" do
       expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_rule', module_address: target)
                          .once
                          .with_attribute_value(:event_pattern, {
-                           "detail-type": [ { "prefix": "" } ]
+                           "detail-type": [{ "prefix": "" }]
                          }.to_json)
     end
   end
@@ -110,7 +110,7 @@ RSpec.describe "mixed configuration tests" do
                          .once
                          .with_attribute_value(:event_pattern, {
                            "account": { "anything-but": ["2828282828282", "949494949494", current_account] },
-                           "detail-type": [ "speak:RoomOfRequirement" ]
+                           "detail-type": ["speak:RoomOfRequirement"]
                          }.to_json)
     end
   end
@@ -124,7 +124,26 @@ RSpec.describe "mixed configuration tests" do
                          .once
                          .with_attribute_value(:event_pattern, {
                            "account": { "anything-but": [current_account] },
-                           "detail-type": [ "speak:RoomOfRequirement" ]
+                           "detail-type": ["speak:RoomOfRequirement"]
+                         }.to_json)
+    end
+  end
+
+  context "nested-filters" do
+    let(:target) { "module.nested-filters" }
+
+    it "can build nested filters " do
+      expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_rule', module_address: target)
+                         .once
+                         .with_attribute_value(:event_pattern, {
+                           "detail": {
+                             "punishment": {
+                               "level": {
+                                 "strictest": [true]
+                               }
+                             }
+                           },
+                           "detail-type": ["cast:spell:unforgivable"]
                          }.to_json)
     end
   end
