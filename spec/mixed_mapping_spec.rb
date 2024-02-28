@@ -48,6 +48,19 @@ RSpec.describe "mixed configuration tests" do
         expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy', module_address: target)
                            .with_attribute_value(:name, "invoke-bus")
       end
+
+      it "adds role to resources that need it" do
+        # for the bus target
+        expect(@plan).not_to include_resource_creation(type: 'aws_cloudwatch_event_target', module_address: target)
+                           .with_attribute_value(:arn, 'arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic')
+                           .with_attribute_value(:role_arn, nil)
+      end
+
+      it "does not add role to resources which cannot accept it" do
+        # for the two lambda targets and one SQS target
+        expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_target', module_address: target)
+                           .with_attribute_value(:role_arn, nil).exactly(3).times
+      end
     end
 
     # Fix this
