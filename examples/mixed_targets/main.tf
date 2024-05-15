@@ -51,9 +51,6 @@ module "added-filters" {
     class = ["unforgivable"]
   }
 
-  allow_accounts  = ["123456789012", "098765432109"]
-  ignore_accounts = ["2828282828282", "949494949494"] # this should be overwritten by the `allow_accounts` spec as more restrictive
-
   targets = {
     bus = {
       ministryOfMagic : "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"
@@ -62,6 +59,37 @@ module "added-filters" {
       Duck : "arn:aws:lambda:us-east-1:123456789012:function:Duck",
       Dodge : "arn:aws:lambda:us-east-1:123456789012:function:Dodge",
       Weave : "arn:aws:lambda:us-east-1:123456789012:function:Weave",
+    }
+  }
+}
+
+module "account-filters-priority" {
+  source   = "../../"
+  bus_name = "the-knight-bus"
+
+  event_patterns = ["event.SpellCast"]
+
+  allow_accounts  = ["123456789012", "098765432109"]
+  ignore_accounts = ["2828282828282", "949494949494"] # this should be overwritten by the `allow_accounts` spec as more restrictive
+
+  targets = {
+    bus = {
+      ministryOfMagic : "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"
+    }
+  }
+}
+
+module "account-filters" {
+  source   = "../../"
+  bus_name = "the-knight-bus"
+
+  event_patterns = ["event.SpellCast"]
+
+  ignore_accounts = ["2828282828282", "949494949494"]
+
+  targets = {
+    bus = {
+      ministryOfMagic : "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"
     }
   }
 }
