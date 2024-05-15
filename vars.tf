@@ -109,5 +109,5 @@ locals {
   filters         = var.filters == null ? {} : { detail = var.filters }
   accounts        = length(var.allow_accounts) == 0 ? {} : { account = var.allow_accounts }
   ignore_accounts = var.exclude_self ? concat(var.ignore_accounts, [data.aws_caller_identity.self.account_id]) : var.ignore_accounts
-  not_accounts    = length(local.ignore_accounts) == 0 ? {} : { account = { "anything-but" : local.ignore_accounts } }
+  not_accounts    = length(local.ignore_accounts) == 0 ? {} : { account = [{ "anything-but" : local.ignore_accounts }] }
 }

@@ -76,7 +76,7 @@ RSpec.describe "mixed configuration tests" do
       expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_rule', module_address: target)
                          .once
                          .with_attribute_value(:event_pattern, {
-                           "account": %w[123456789012 098765432109],
+                           "account": ["123456789012", "098765432109"],
                            "detail": {
                              "class": ["unforgivable"],
                              "type": ["curse"]
@@ -114,7 +114,7 @@ RSpec.describe "mixed configuration tests" do
       expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_rule', module_address: target)
                          .once
                          .with_attribute_value(:event_pattern, {
-                           "account": { "anything-but": ["2828282828282", "949494949494", current_account] },
+                           "account": [{ "anything-but": ["2828282828282", "949494949494", current_account] }],
                            "detail-type": ["speak:RoomOfRequirement"]
                          }.to_json)
     end
@@ -128,7 +128,7 @@ RSpec.describe "mixed configuration tests" do
       expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_rule', module_address: target)
                          .once
                          .with_attribute_value(:event_pattern, {
-                           "account": { "anything-but": [current_account] },
+                           "account": [{ "anything-but": [current_account] }],
                            "detail-type": ["speak:RoomOfRequirement"]
                          }.to_json)
     end

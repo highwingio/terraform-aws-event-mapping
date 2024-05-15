@@ -51,8 +51,10 @@ module "added-filters" {
     class = ["unforgivable"]
   }
 
+  # in the case both `allow_accounts` and `ignore_accounts are both specified
+  # the `allow_accounts` will take precedence as the more-restrictive filter
   allow_accounts  = ["123456789012", "098765432109"]
-  ignore_accounts = ["2828282828282", "949494949494"] # this should be overwritten by the `allow_accounts` spec as more restrictive
+  ignore_accounts = ["2828282828282", "949494949494"]
 
   targets = {
     bus = {
