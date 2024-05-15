@@ -76,6 +76,7 @@ RSpec.describe "mixed configuration tests" do
       expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_rule', module_address: target)
                          .once
                          .with_attribute_value(:event_pattern, {
+                           "account": ["123456789012", "098765432109"],
                            "detail": {
                              "class": ["unforgivable"],
                              "type": ["curse"]
@@ -90,32 +91,6 @@ RSpec.describe "mixed configuration tests" do
       expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy', module_address: target)
                          .with_attribute_value(:name, "invoke-bus")
                          .with_attribute_value(:policy, include("event-bus/ministryOfMagic"))
-    end
-  end
-
-  context "account-filters-priority" do
-    let(:target) { "module.account-filters-priority" }
-
-    it "prioritizes allowed accounts over ignored ones" do
-      expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_rule', module_address: target)
-                         .once
-                         .with_attribute_value(:event_pattern, {
-                           "account": %w[123456789012 098765432109],
-                           "detail-type": ["event.SpellCast"]
-                         }.to_json)
-    end
-  end
-
-  context "account-filters" do
-    let(:target) { "module.account-filters" }
-
-    it "formats excluded accounts correctly" do
-      expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_rule', module_address: target)
-                         .once
-                         .with_attribute_value(:event_pattern, {
-                           "account": [{ "anything-but": %w[2828282828282 949494949494]}],
-                           "detail-type": ["event.SpellCast"]
-                         }.to_json)
     end
   end
 
@@ -139,7 +114,7 @@ RSpec.describe "mixed configuration tests" do
       expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_rule', module_address: target)
                          .once
                          .with_attribute_value(:event_pattern, {
-                           "account": { "anything-but": ["2828282828282", "949494949494", current_account] },
+                           "account": [{ "anything-but": ["2828282828282", "949494949494", current_account] }],
                            "detail-type": ["speak:RoomOfRequirement"]
                          }.to_json)
     end
@@ -153,7 +128,7 @@ RSpec.describe "mixed configuration tests" do
       expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_rule', module_address: target)
                          .once
                          .with_attribute_value(:event_pattern, {
-                           "account": { "anything-but": [current_account] },
+                           "account": [{ "anything-but": [current_account] }],
                            "detail-type": ["speak:RoomOfRequirement"]
                          }.to_json)
     end
