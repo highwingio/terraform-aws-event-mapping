@@ -15,7 +15,7 @@ RSpec.describe "mixed configuration tests" do
     it "creates a disabled rule" do
       expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_rule', module_address: target)
                          .once
-                         .with_attribute_value(:is_enabled, false)
+                         .with_attribute_value(:state, "DISABLED")
     end
   end
 
