@@ -25,7 +25,7 @@
 resource "aws_cloudwatch_event_rule" "event_rule" {
   name           = local.name
   event_bus_name = var.bus_name
-  is_enabled     = var.enabled
+  state          = var.enabled ? "ENABLED" : "DISABLED"
 
   event_pattern = jsonencode(merge({
     detail-type : concat(var.event_patterns, local.all_pattern)

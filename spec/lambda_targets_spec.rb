@@ -28,6 +28,11 @@ RSpec.describe "lambda targets" do
       expect(@plan).not_to include_resource_creation(type: 'aws_cloudwatch_event_rule')
                              .with_attribute_value(:name, "event.DementorAppear")
     end
+
+    it "enables the rule by default" do
+      expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_rule')
+                         .with_attribute_value(:state, "ENABLED")
+    end
   end
 
   context "aws_cloudwatch_event_target" do
