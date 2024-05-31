@@ -46,6 +46,7 @@ resource "aws_cloudwatch_event_target" "event_target_with_role" {
 resource "aws_cloudwatch_event_target" "event_target_without_role" {
   for_each = merge(var.targets.lambda, var.targets.sqs)
 
+  target_id      = each.key
   arn            = each.value
   rule           = aws_cloudwatch_event_rule.event_rule.name
   event_bus_name = var.bus_name
