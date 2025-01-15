@@ -14,9 +14,9 @@ module "disabled" {
   event_patterns = ["event.HitTheBreaks"]
 
   targets = {
-    lambda = {
-      busStop : "arn:aws:lambda:us-east-1:123456789012:function:stopBus",
-    }
+    lambda = [
+      "arn:aws:lambda:us-east-1:123456789012:function:stopBus",
+    ]
   }
 }
 
@@ -27,16 +27,16 @@ module "multi-target" {
   event_patterns = ["event.DementorsAppear"]
 
   targets = {
-    sqs = {
-      SortingHat : "arn:aws:sqs:us-east-1:123456789012:screamProphecy"
-    }
-    bus = {
-      MinOfMag : "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"
-    },
-    lambda = {
-      summonPatronus : "arn:aws:lambda:us-east-1:123456789012:function:summonPatronus",
-      blackOut : "arn:aws:lambda:us-east-1:123456789012:function:blackOut"
-    }
+    sqs = [
+      "arn:aws:sqs:us-east-1:123456789012:screamProphecy"
+    ]
+    bus = [
+      "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"
+    ]
+    lambda = [
+      "arn:aws:lambda:us-east-1:123456789012:function:summonPatronus",
+      "arn:aws:lambda:us-east-1:123456789012:function:blackOut"
+    ]
   }
 }
 
@@ -57,14 +57,12 @@ module "added-filters" {
   ignore_accounts = ["2828282828282", "949494949494"]
 
   targets = {
-    bus = {
-      ministryOfMagic : "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"
-    },
-    lambda = {
-      Duck : "arn:aws:lambda:us-east-1:123456789012:function:Duck",
-      Dodge : "arn:aws:lambda:us-east-1:123456789012:function:Dodge",
-      Weave : "arn:aws:lambda:us-east-1:123456789012:function:Weave",
-    }
+    bus = ["arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"],
+    lambda = [
+      "arn:aws:lambda:us-east-1:123456789012:function:Duck",
+      "arn:aws:lambda:us-east-1:123456789012:function:Dodge",
+      "arn:aws:lambda:us-east-1:123456789012:function:Weave",
+    ]
   }
 }
 
@@ -76,9 +74,9 @@ module "any-events" {
   all_events = true
 
   targets = {
-    bus = {
-      ministryOfMagic : "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"
-    }
+    bus = [
+      "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"
+    ]
   }
 }
 
@@ -95,9 +93,9 @@ module "ignored-accounts" {
   event_patterns = ["speak:RoomOfRequirement"]
 
   targets = {
-    bus = {
-      ministryOfMagic : "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"
-    }
+    bus = [
+      "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"
+    ]
   }
 }
 
@@ -111,9 +109,9 @@ module "ignored-self" {
   event_patterns = ["speak:RoomOfRequirement"]
 
   targets = {
-    bus = {
-      ministryOfMagic : "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"
-    }
+    bus = [
+      "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"
+    ]
   }
 }
 
@@ -133,8 +131,8 @@ module "nested-filters" {
   }
 
   targets = {
-    bus = {
-      ministryOfMagic : "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"
-    }
+    bus = [
+      "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic"
+    ]
   }
 }

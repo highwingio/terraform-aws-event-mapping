@@ -34,7 +34,7 @@ resource "aws_cloudwatch_event_rule" "event_rule" {
 
 # handles the target mapping for targets that require an IAM role
 resource "aws_cloudwatch_event_target" "event_target_with_role" {
-  for_each = merge(var.targets.bus, var.targets.sfn)
+  for_each = setunion(var.targets.bus, var.targets.sfn)
 
   arn            = each.value
   role_arn       = aws_iam_role.event_role[0].arn
@@ -44,9 +44,9 @@ resource "aws_cloudwatch_event_target" "event_target_with_role" {
 
 # handles the target mapping for targets that prohibit using IAM roles
 resource "aws_cloudwatch_event_target" "event_target_without_role" {
-  for_each = merge(var.targets.lambda, var.targets.sqs)
+  for_each = setunion(var.targets.lambda, var.targets.sqs)
 
-  target_id      = each.key
+  target_id      = reverse(split(":", each.value))[0]
   arn            = each.value
   rule           = aws_cloudwatch_event_rule.event_rule.name
   event_bus_name = var.bus_name

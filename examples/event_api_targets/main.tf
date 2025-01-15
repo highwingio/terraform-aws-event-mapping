@@ -40,7 +40,6 @@ module "named_event_mapping" {
 }
 EOF
       }
-
     }
   }
 }

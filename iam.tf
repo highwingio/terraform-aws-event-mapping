@@ -24,14 +24,14 @@ resource "aws_iam_role" "event_role" {
 data "aws_iam_policy_document" "sfn_policy" {
   statement {
     actions   = ["states:StartExecution"]
-    resources = values(var.targets.sfn)
+    resources = var.targets.sfn
   }
 }
 
 data "aws_iam_policy_document" "bus_policy" {
   statement {
     actions   = ["events:PutEvents"]
-    resources = values(var.targets.bus)
+    resources = var.targets.bus
   }
 }
 

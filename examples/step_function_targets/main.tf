@@ -17,8 +17,8 @@ module "named_event_mapping" {
   ]
 
   targets = {
-    sfn = {
-      PolyJuicer : "arn:aws:states:us-east-1:123456789012:stateMachine:PolyJuicePotion"
-    }
+    sfn = [
+      "arn:aws:states:us-east-1:123456789012:stateMachine:PolyJuicePotion"
+    ]
   }
 }
