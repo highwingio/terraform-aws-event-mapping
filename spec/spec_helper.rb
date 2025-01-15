@@ -3,7 +3,12 @@ require 'rspec/terraform'
 # enable debug output if explicitly disabled or if GH actions requests it
 def debug?
   ENV.fetch('SILENCE_TERRAFORM', "true") != "true" ||
-    ENV.fetch('ACTIONS_RUNNER_DEBUG', "false") == "true"
+  ENV.fetch('ACTIONS_RUNNER_DEBUG', "false") == "true"
+end
+
+# Fix breaking change in more recent versions of rspec-terraform
+Lino.configure do |config|
+  config.executor = Lino::Executors::Open4.new
 end
 
 RSpec.configure do |config|
