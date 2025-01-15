@@ -56,7 +56,7 @@ resource "aws_lambda_permission" "permission" {
   for_each = var.targets.lambda
 
   action        = "lambda:InvokeFunction"
-  function_name = each.key
+  function_name = reverse(split(":", each.value))[0]
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.event_rule.arn
 }
