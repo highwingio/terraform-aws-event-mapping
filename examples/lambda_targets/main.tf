@@ -12,10 +12,10 @@ module "lambda_targets" {
   event_patterns = ["event.MalfoyAttacks"]
 
   targets = {
-    lambda = {
-      ronWeasley : "arn:aws:lambda:us-east-1:123456789012:function:summonRon",
-      hermioneGranger : "arn:aws:lambda:us-east-1:123456789012:function:summonHermione"
-    }
+    lambda = [
+      "arn:aws:lambda:us-east-1:123456789012:function:summonRon",
+      "arn:aws:lambda:us-east-1:123456789012:function:summonHermione"
+    ]
   }
 }
 
@@ -29,8 +29,8 @@ module "multi_events" {
   ]
 
   targets = {
-    lambda = {
-      patronus : "arn:aws:lambda:us-east-1:123456789012:function:summonPatronus"
-    }
+    lambda = [
+      "arn:aws:lambda:us-east-1:123456789012:function:summonPatronus"
+    ]
   }
 }
