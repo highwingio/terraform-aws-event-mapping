@@ -6,7 +6,7 @@ provider "aws" {
   region = "us-east-1"
 }
 
-module "appsync_action" {
+module "appsync_explicit" {
   source   = "../../"
   bus_name = "the-knight-bus"
   event_patterns = [
@@ -26,12 +26,38 @@ module "appsync_action" {
           healing: "$.detail.phoenix_tears"
         }
 
-        operation: "createEmergency",
+        operation: "createEmergency"
         response_template: <<EOF
 {
   message
   status
   eta
+}
+EOF
+      }
+    }
+  }
+}
+
+module "appsync_passthru" {
+  source   = "../../"
+  bus_name = "the-knight-bus"
+  event_patterns = [
+    "event.SockGiven",
+  ]
+
+  targets = {
+    appsync = {
+      dobby : {
+        arn : "arn:aws:appsync:us-east-1:123456789012:apis/house-elf-dobby"
+
+        passthrough: true
+        operation: "freeDobby"
+        response_template: <<EOF
+{
+  message
+  status
+  sockColor
 }
 EOF
       }

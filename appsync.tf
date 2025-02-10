@@ -1,3 +1,10 @@
+locals {
+  passthru_template = "{ \"input\": <input> }"
+  passthru_vars = {
+    input: "$.detail"
+  }
+}
+
 resource "aws_cloudwatch_event_target" "appsync" {
   for_each = var.targets.appsync
 
@@ -8,8 +15,8 @@ resource "aws_cloudwatch_event_target" "appsync" {
   event_bus_name = var.bus_name
 
   input_transformer {
-    input_paths    = each.value.template_vars
-    input_template = each.value.template
+    input_paths    = each.value.passthrough ? local.passthru_vars : each.value.template_vars
+    input_template = each.value.passthrough ? local.passthru_template :  each.value.template
   }
 
   appsync_target {
