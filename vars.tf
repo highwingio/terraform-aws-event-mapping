@@ -30,8 +30,16 @@ variable "targets" {
     event_api = optional(map(object({
       endpoint : string,
       token : string,
-      template_vars = optional(map(string), {}),
-      template      = string,
+      template_vars : optional(map(string), {}),
+      template : string,
+    })), {})
+    appsync = optional(map(object({
+      arn : string,
+      operation : string
+      passthrough : optional(bool, false),
+      template_vars : optional(map(string), {}),
+      template : optional(string),
+      response_template : string
     })), {})
   })
 

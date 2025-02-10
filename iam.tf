@@ -1,5 +1,5 @@
 locals {
-  iam_service_types = ["bus", "event_api", "sfn"]
+  iam_service_types = ["bus", "event_api", "sfn", "appsync"]
   target_types      = [for k, v in var.targets : k if length(v) > 0]
   needs_iam         = length(setintersection(local.iam_service_types, local.target_types)) > 0
 }
@@ -44,6 +44,16 @@ data "aws_iam_policy_document" "api_event_invoke" {
   }
 }
 
+data "aws_iam_policy_document" "appsync_policy" {
+  statement {
+    actions = [
+      "appsync:GraphQL"
+    ]
+    resources = [for k, v in var.targets.appsync : "${v.arn}/types/Mutation/fields/${v.operation}"]
+  }
+}
+
+
 resource "aws_iam_role_policy" "api_events" {
   count = length(var.targets.event_api) > 0 ? 1 : 0
 
@@ -66,4 +76,12 @@ resource "aws_iam_role_policy" "sfn_events" {
   name   = "invoke-sfn"
   role   = aws_iam_role.event_role[0].id
   policy = data.aws_iam_policy_document.sfn_policy.json
+}
+
+resource "aws_iam_role_policy" "appsync_events" {
+  count = length(var.targets.appsync) > 0 ? 1 : 0
+
+  name   = "invoke-appsync"
+  role   = aws_iam_role.event_role[0].id
+  policy = data.aws_iam_policy_document.appsync_policy.json
 }

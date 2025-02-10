@@ -1,0 +1,10 @@
+{
+  "detail": {
+    "location": "<location>",
+    "urgency": "<about-to-die>",
+    "bring": [
+      <magicItems>
+    ],
+    "phoenix_tears": "<tearsForFears>"
+  }
+}
