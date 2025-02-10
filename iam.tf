@@ -78,7 +78,7 @@ resource "aws_iam_role_policy" "sfn_events" {
   policy = data.aws_iam_policy_document.sfn_policy.json
 }
 
-resource "aws_iam_role_policy" "appysnc_events" {
+resource "aws_iam_role_policy" "appsync_events" {
   count = length(var.targets.appsync) > 0 ? 1 : 0
 
   name   = "invoke-appsync"
