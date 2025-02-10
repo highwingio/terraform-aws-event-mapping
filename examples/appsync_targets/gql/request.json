@@ -1,0 +1,11 @@
+{
+  "detail": {
+    "location": "Chamber of Secrets",
+    "urgency": "Life or Death",
+    "bring": [
+      "Sword of Gryffindor",
+      "Sorting Hat"
+    ],
+    "phoenix_tears": "Yes"
+  }
+}

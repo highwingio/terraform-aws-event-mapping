@@ -24,14 +24,21 @@ variable "exclude_self" {
 variable "targets" {
   type = object({
     lambda = optional(set(string), [])
-    bus    = optional(set(string), [])
-    sqs    = optional(set(string), [])
-    sfn    = optional(set(string), [])
+    bus = optional(set(string), [])
+    sqs = optional(set(string), [])
+    sfn = optional(set(string), [])
     event_api = optional(map(object({
       endpoint : string,
       token : string,
-      template_vars = optional(map(string), {}),
-      template      = string,
+      template_vars : optional(map(string), {}),
+      template : string,
+    })), {})
+    appsync = optional(map(object({
+      arn : string,
+      operation : string
+      template_vars : optional(map(string), {}),
+      template          : string,
+      response_template : string,
     })), {})
   })
 
@@ -50,7 +57,7 @@ variable "targets" {
   }
 
   validation {
-    condition     = alltrue([for arn in var.targets.sqs : can(regex("arn:aws:sqs:[a-z,0-9,-]+:\\d{12}:", arn))])
+    condition = alltrue([for arn in var.targets.sqs : can(regex("arn:aws:sqs:[a-z,0-9,-]+:\\d{12}:", arn))])
     error_message = "The sqs set may only contain sqs queue ARNs."
   }
 
@@ -65,8 +72,8 @@ variable "targets" {
 }
 
 variable "event_patterns" {
-  type        = list(string)
-  default     = []
+  type = list(string)
+  default = []
   description = "Event patterns to listen for on source bus."
 }
 
@@ -77,29 +84,29 @@ variable "all_events" {
 }
 
 variable "filters" {
-  type        = map(any)
+  type = map(any)
   description = "Filters to apply against the event `detail`s. Must be a valid content filter (see [docs](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-event-patterns-content-based-filtering.html))"
   default     = null
 }
 
 variable "allow_accounts" {
-  type        = list(string)
+  type = list(string)
   description = "Allowed accounts. Will override `ignore_accounts` if present."
-  default     = []
+  default = []
 
   validation {
-    condition     = alltrue([for id in var.allow_accounts : can(regex("\\d{12}", id))])
+    condition = alltrue([for id in var.allow_accounts : can(regex("\\d{12}", id))])
     error_message = "Please provide valid account IDs"
   }
 }
 
 variable "ignore_accounts" {
-  type        = list(string)
+  type = list(string)
   description = "Ignored accounts. Will be overridden by `allow_accounts` if present."
-  default     = []
+  default = []
 
   validation {
-    condition     = alltrue([for id in var.ignore_accounts : can(regex("\\d{12}", id))])
+    condition = alltrue([for id in var.ignore_accounts : can(regex("\\d{12}", id))])
     error_message = "Please provide valid account IDs"
   }
 }
