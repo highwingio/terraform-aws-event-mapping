@@ -20,14 +20,14 @@ module "appsync_explicit" {
 
         template : file("${path.module}/gql/request.json")
         template_vars = {
-          location: "$.detail.location"
-          urgency: "$.detail.urgency"
-          bring: "$.detail.bring",
-          healing: "$.detail.phoenix_tears"
+          location : "$.detail.location"
+          urgency : "$.detail.urgency"
+          bring : "$.detail.bring",
+          healing : "$.detail.phoenix_tears"
         }
 
-        operation: "createEmergency"
-        response_template: <<EOF
+        operation : "createEmergency"
+        response_template : <<EOF
 {
   message
   status
@@ -51,9 +51,9 @@ module "appsync_passthru" {
       dobby : {
         arn : "arn:aws:appsync:us-east-1:123456789012:apis/house-elf-dobby"
 
-        passthrough: true
-        operation: "freeDobby"
-        response_template: <<EOF
+        passthrough : true
+        operation : "freeDobby"
+        response_template : <<EOF
 {
   message
   status
