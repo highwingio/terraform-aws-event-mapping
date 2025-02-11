@@ -35,6 +35,7 @@ variable "targets" {
     })), {})
     appsync = optional(map(object({
       arn : string,
+      http_url : string,
       operation : string
       passthrough : optional(bool, false),
       template_vars : optional(map(string), {}),

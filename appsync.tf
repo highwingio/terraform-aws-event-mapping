@@ -10,7 +10,7 @@ resource "aws_cloudwatch_event_target" "appsync" {
 
   target_id      = each.key
   rule           = aws_cloudwatch_event_rule.event_rule.name
-  arn            = each.value.arn
+  arn            = "arn:aws:appsync:us-east-1:${data.aws_arn.gql_arns[each.key].account}:endpoints/graphql-api/${regex("https://(\\w+)\\..+", each.value.http_url)[0]}"
   role_arn       = aws_iam_role.event_role[0].arn
   event_bus_name = var.bus_name
 

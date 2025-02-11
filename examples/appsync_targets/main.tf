@@ -17,6 +17,7 @@ module "appsync_explicit" {
     appsync = {
       phoenix : {
         arn : "arn:aws:appsync:us-east-1:123456789012:apis/fawkes-phoenix"
+        http_url : "https://lotsofdigitsandchars.appsync-api.us-east-1.amazonaws.com/graphql"
 
         template : file("${path.module}/gql/request.json")
         template_vars = {
@@ -50,6 +51,7 @@ module "appsync_passthru" {
     appsync = {
       dobby : {
         arn : "arn:aws:appsync:us-east-1:123456789012:apis/house-elf-dobby"
+        http_url : "https://randomstringofcharacters.appsync-api.us-east-1.amazonaws.com/graphql"
 
         passthrough : true
         operation : "freeDobby"
