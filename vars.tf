@@ -16,7 +16,7 @@ variable "enabled" {
 }
 
 variable "retry_attempts" {
-  type = number
+  type    = number
   default = 5
 }
 
