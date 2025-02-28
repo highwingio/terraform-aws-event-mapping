@@ -24,7 +24,8 @@ resource "aws_cloudwatch_event_target" "appsync" {
   }
 
   retry_policy {
-    maximum_retry_attempts = var.retry_attempts
+    maximum_event_age_in_seconds = var.maximum_event_age_in_seconds # 24hrs
+    maximum_retry_attempts       = var.retry_attempts
   }
 
   dead_letter_config {
