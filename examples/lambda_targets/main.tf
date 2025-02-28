@@ -11,6 +11,9 @@ module "lambda_targets" {
   bus_name       = "the-knight-bus"
   event_patterns = ["event.MalfoyAttacks"]
 
+  retry_attempts               = 5
+  maximum_event_age_in_seconds = 80
+
   targets = {
     lambda = [
       "arn:aws:lambda:us-east-1:123456789012:function:summonRon",

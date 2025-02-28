@@ -34,8 +34,8 @@ RSpec.describe "appsync targets" do
       it "specifies gql response" do
         expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_target', module_address: 'module.appsync_explicit')
                            .with_attribute_value(:retry_policy, [{
-                                                                   maximum_event_age_in_seconds: nil,
-                                                                   maximum_retry_attempts: 5
+                                                                   maximum_event_age_in_seconds: 86400,
+                                                                   maximum_retry_attempts: 185
                                                                  }])
                            .with_attribute_value([:appsync_target, 0, :graphql_operation],
                                                  "mutation CreateEmergency($input: CreateEmergencyInput!) { createEmergency(input: $input) {\n  message\n  status\n  eta\n}\n}")
