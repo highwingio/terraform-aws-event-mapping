@@ -45,10 +45,15 @@ RSpec.describe "lambda targets" do
                          .with_attribute_value(:arn, "arn:aws:lambda:us-east-1:123456789012:function:summonRon")
                          .with_attribute_value(:event_bus_name, "the-knight-bus")
                          .with_attribute_value(:rule, "event.MalfoyAttacks")
+                         .with_attribute_value(:retry_policy, [{
+                                                                 maximum_event_age_in_seconds: nil,
+                                                                 maximum_retry_attempts: 5
+                                                               }])
 
       expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_target')
                          .with_attribute_value(:arn, "arn:aws:lambda:us-east-1:123456789012:function:summonHermione")
                          .with_attribute_value(:rule, "event.MalfoyAttacks")
+
 
       expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_target')
                          .with_attribute_value(:arn, "arn:aws:lambda:us-east-1:123456789012:function:summonPatronus")
@@ -60,6 +65,13 @@ RSpec.describe "lambda targets" do
     it "does not create iam role for target" do
       expect(@plan).to include_resource_creation(type: 'aws_iam_role').exactly(0).times
       expect(@plan).to include_resource_creation(type: 'aws_iam_role_policy').exactly(0).times
+    end
+  end
+
+  context "retry handling" do
+    it "creates a dead-letter queue for the target" do
+      expect(@plan).to include_resource_creation(type: 'aws_sqs_queue').exactly(1).times
+                                                                       .with_attribute_value(:name, "MalfoyAttacks-dlq")
     end
   end
 

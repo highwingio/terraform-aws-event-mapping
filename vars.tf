@@ -15,6 +15,11 @@ variable "enabled" {
   default     = true
 }
 
+variable "retry_attempts" {
+  type = number
+  default = 5
+}
+
 variable "exclude_self" {
   type        = bool
   description = "Exclude the calling account's events"

@@ -37,4 +37,12 @@ resource "aws_cloudwatch_event_target" "event_api" {
     input_paths    = each.value.template_vars
     input_template = each.value.template
   }
+
+  retry_policy {
+    maximum_retry_attempts = var.retry_attempts
+  }
+
+  dead_letter_config {
+    arn = aws_sqs_queue.dlq.arn
+  }
 }
