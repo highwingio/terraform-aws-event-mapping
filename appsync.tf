@@ -22,4 +22,12 @@ resource "aws_cloudwatch_event_target" "appsync" {
   appsync_target {
     graphql_operation = "mutation ${title(each.value.operation)}($input: ${title(each.value.operation)}Input!) { ${each.value.operation}(input: $input) ${each.value.response_template}}"
   }
+
+  retry_policy {
+    maximum_retry_attempts = var.retry_attempts
+  }
+
+  dead_letter_config {
+    arn = aws_sqs_queue.dlq.arn
+  }
 }

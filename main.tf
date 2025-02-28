@@ -40,6 +40,14 @@ resource "aws_cloudwatch_event_target" "event_target_with_role" {
   role_arn       = aws_iam_role.event_role[0].arn
   rule           = aws_cloudwatch_event_rule.event_rule.name
   event_bus_name = var.bus_name
+
+  retry_policy {
+    maximum_retry_attempts = var.retry_attempts
+  }
+
+  dead_letter_config {
+    arn = aws_sqs_queue.dlq.arn
+  }
 }
 
 # handles the target mapping for targets that prohibit using IAM roles
@@ -50,6 +58,18 @@ resource "aws_cloudwatch_event_target" "event_target_without_role" {
   arn            = each.value
   rule           = aws_cloudwatch_event_rule.event_rule.name
   event_bus_name = var.bus_name
+
+  retry_policy {
+    maximum_retry_attempts = var.retry_attempts
+  }
+
+  dead_letter_config {
+    arn = aws_sqs_queue.dlq.arn
+  }
+}
+
+resource "aws_sqs_queue" "dlq" {
+  name = "${reverse(split(".", local.name))[0]}-dlq"
 }
 
 resource "aws_lambda_permission" "permission" {

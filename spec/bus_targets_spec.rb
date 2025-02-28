@@ -35,6 +35,10 @@ RSpec.describe "event bus targets" do
                          .with_attribute_value(:arn, "arn:aws:events:us-east-1:123456789012:event-bus/ministryOfMagic")
                          .with_attribute_value(:event_bus_name, "the-knight-bus")
                          .with_attribute_value(:rule, "event.DementorsAppear")
+                         .with_attribute_value(:retry_policy, [{
+                                                                 maximum_event_age_in_seconds: nil,
+                                                                 maximum_retry_attempts: 5
+                                                               }])
     end
   end
 

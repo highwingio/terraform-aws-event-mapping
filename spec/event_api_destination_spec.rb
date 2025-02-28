@@ -19,6 +19,10 @@ RSpec.describe "event api targets" do
     it "specifies targets" do
       expect(@plan).to include_resource_creation(type: 'aws_cloudwatch_event_target')
                          .with_attribute_value(:rule, "event.HogwartsExternal")
+                         .with_attribute_value(:retry_policy, [{
+                                                                 maximum_event_age_in_seconds: nil,
+                                                                 maximum_retry_attempts: 5
+                                                               }])
                          .with_attribute_value([:input_transformer, 0, :input_paths], { submission_uuid: "$.detail.student_name" })
                          .with_attribute_value([:input_transformer, 0, :input_template], JSON.pretty_generate({
                            blocks: [
