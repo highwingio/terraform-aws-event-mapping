@@ -17,7 +17,12 @@ variable "enabled" {
 
 variable "retry_attempts" {
   type    = number
-  default = 5
+  default = 185
+}
+
+variable "maximum_event_age_in_seconds" {
+  type    = number
+  default = 86400
 }
 
 variable "exclude_self" {

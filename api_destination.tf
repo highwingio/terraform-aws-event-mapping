@@ -39,7 +39,8 @@ resource "aws_cloudwatch_event_target" "event_api" {
   }
 
   retry_policy {
-    maximum_retry_attempts = var.retry_attempts
+    maximum_event_age_in_seconds = var.maximum_event_age_in_seconds
+    maximum_retry_attempts       = var.retry_attempts
   }
 
   dead_letter_config {

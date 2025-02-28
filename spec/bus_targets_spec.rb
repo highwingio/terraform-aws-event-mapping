@@ -36,8 +36,8 @@ RSpec.describe "event bus targets" do
                          .with_attribute_value(:event_bus_name, "the-knight-bus")
                          .with_attribute_value(:rule, "event.DementorsAppear")
                          .with_attribute_value(:retry_policy, [{
-                                                                 maximum_event_age_in_seconds: nil,
-                                                                 maximum_retry_attempts: 5
+                                                                 maximum_event_age_in_seconds: 86400,
+                                                                 maximum_retry_attempts: 185
                                                                }])
     end
   end

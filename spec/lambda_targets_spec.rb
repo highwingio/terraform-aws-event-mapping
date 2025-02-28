@@ -46,7 +46,7 @@ RSpec.describe "lambda targets" do
                          .with_attribute_value(:event_bus_name, "the-knight-bus")
                          .with_attribute_value(:rule, "event.MalfoyAttacks")
                          .with_attribute_value(:retry_policy, [{
-                                                                 maximum_event_age_in_seconds: nil,
+                                                                 maximum_event_age_in_seconds: 80,
                                                                  maximum_retry_attempts: 5
                                                                }])
 
